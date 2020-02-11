@@ -25,7 +25,7 @@ namespace Engine.ViewModels
             currentLocation.name = "Home";
             currentLocation.xCordindate = 0;
             currentLocation.yCordindate = -1;
-            currentLocation.imageName = "pack://application:,,,/Engine;component/Images/Locations/Home.png";
+            currentLocation.imageName = "pack://application:,,,/Engine;component/Images/Locations/green-tree.png";
             currentLocation.description = "A little broken down, But it's home";
         }
 
