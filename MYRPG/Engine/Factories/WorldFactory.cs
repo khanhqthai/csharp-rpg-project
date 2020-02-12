@@ -30,7 +30,7 @@ namespace Engine.Factories
                 "The back bone of this town, farmers.", 
                 "pack://application:,,,/Engine;component/Images/Locations/farm-house.png");
             
-            newWorld.AddLocation(-1, -1, "Farm Field",
+            newWorld.AddLocation(-2, -1, "Farm Field",
                 "Looks like the seasons have been well for farming",
                 "pack://application:,,,/Engine;component/Images/Locations/farm-field.png");
 
@@ -44,7 +44,7 @@ namespace Engine.Factories
 
             newWorld.AddLocation(0, 2, "Herb Garden",
                            "A garden full of the lastest herbs",
-                           "pack://application:,,,/Engine;component/Images/Locations/herbalist-garden.png");
+                           "pack://application:,,,/Engine;component/Images/Locations/herbalists-garden.png");
 
             newWorld.AddLocation(0, 3, "Hidden Path",
                "Hmm, where does this lead to",

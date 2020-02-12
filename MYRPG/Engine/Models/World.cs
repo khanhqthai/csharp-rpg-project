@@ -12,11 +12,11 @@ namespace Engine.Models
         internal void AddLocation(int xCordinate, int yCordinate, string name, string description, string imageName) 
         {
             Location loc = new Location();
-            loc.xCordindate = xCordinate;
-            loc.yCordindate = yCordinate;
-            loc.name = name;
-            loc.description = description;
-            loc.imageName = imageName;
+            loc.XCordindate = xCordinate;
+            loc.YCordindate = yCordinate;
+            loc.Name = name;
+            loc.Description = description;
+            loc.ImageName = imageName;
             _locations.Add(loc);
         }
 
@@ -26,7 +26,7 @@ namespace Engine.Models
             // loop through our _location list, if the cordinate matche return the location, else return null
             foreach (Location loc in _locations) 
             {
-                if (loc.xCordindate == xCordinate && loc.yCordindate == yCordinate) {
+                if (loc.XCordindate == xCordinate && loc.YCordindate == yCordinate) {
                     return loc;
                 }
                                 

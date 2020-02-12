@@ -24,7 +24,7 @@ namespace Engine.Models
 
 
 
-        public String name
+        public String Name
         {
             get { return _name; }
             set
@@ -32,59 +32,61 @@ namespace Engine.Models
                 // everytime  we set/update our value for name
                 // we call OnPropertyChanged to notify anything using the property that it has been changed
                 _name = value;
-                OnPropertyChanged("name");
+                OnPropertyChanged("Name");
             }
         }
 
-        public String characterClass
+        public String CharacterClass
         {
             get { return _characterClass; }
             set
             {
                 _characterClass = value;
-                OnPropertyChanged("characterClass");
+                OnPropertyChanged("CharacterClass");
             }
         }
-        public int hitPoints
+        public int HitPoints
         {
             get { return _hitPoints; }
             set
             {
                 _hitPoints = value;
-                OnPropertyChanged("hitPoints");
+                OnPropertyChanged("HitPoints");
             }
         }
-        public int expPoints
+        public int ExpPoints
         {
             get { return _expPoints; }
             set
             {
                 _expPoints = value;
-                OnPropertyChanged("expPoints");
+                OnPropertyChanged("ExpPoints");
             }
         }
-        public int level
+        public int Level
         {
             get { return _level; }
             set
             {
                 _level = value;
-                OnPropertyChanged("level");
+                OnPropertyChanged("Level");
             }
         }
-        public int gold
+        public int Gold
         {
             get { return _gold; }
             set
             {
                 _gold = value;
-                OnPropertyChanged("gold");
+                OnPropertyChanged("Gold");
             }
         }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // protected -  visible only inside this class and classes derived from it.
+        // virtual - that it can be overriden in derived classes
         protected virtual void OnPropertyChanged(string propertyName)
         {
             // if anybody is listening to PropertyChanged, notify them that the property has changed

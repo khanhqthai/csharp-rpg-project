@@ -8,10 +8,10 @@ namespace Engine.Models
 {
     public class Location
     {
-        public int xCordindate { get; set; }
-        public int yCordindate { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public string imageName { get; set; }
+        public int XCordindate { get; set; }
+        public int YCordindate { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string ImageName { get; set; }
     }
 }
