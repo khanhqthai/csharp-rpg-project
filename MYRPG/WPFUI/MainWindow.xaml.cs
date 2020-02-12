@@ -30,9 +30,24 @@ namespace WPFUI
             DataContext = _gamesSession;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        // our move functions are private because only MainWindow.xaml will be using it.
+        // note: the onlick has 2 parameters sent from the xaml when clicked, we are not going to use them, but need to hold them. 
+        private void Onclick_MoveNorth(object sender, RoutedEventArgs e) 
         {
-            _gamesSession.currentPlayer.expPoints++;
+            
         }
+        private void Onclick_MoveWest(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void Onclick_MoveEast(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void Onclick_MoveSouth(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
