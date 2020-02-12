@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel;
 
 namespace Engine.Models
 {
@@ -12,7 +11,7 @@ namespace Engine.Models
         When we change hitPoints, expPoints..etc.  The changes in are not reflected in our view.  This is wehre INotifyPropertyChanged comes in
         It notify the view that these values have changed.
     */
-    public class Player : INotifyPropertyChanged
+    public class Player : BaseNotificationClass
     {
 
         private String _name;
@@ -32,7 +31,7 @@ namespace Engine.Models
                 // everytime  we set/update our value for name
                 // we call OnPropertyChanged to notify anything using the property that it has been changed
                 _name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -42,7 +41,7 @@ namespace Engine.Models
             set
             {
                 _characterClass = value;
-                OnPropertyChanged("CharacterClass");
+                OnPropertyChanged(nameof(CharacterClass));
             }
         }
         public int HitPoints
@@ -51,7 +50,7 @@ namespace Engine.Models
             set
             {
                 _hitPoints = value;
-                OnPropertyChanged("HitPoints");
+                OnPropertyChanged(nameof(HitPoints));
             }
         }
         public int ExpPoints
@@ -60,7 +59,7 @@ namespace Engine.Models
             set
             {
                 _expPoints = value;
-                OnPropertyChanged("ExpPoints");
+                OnPropertyChanged(nameof(ExpPoints));
             }
         }
         public int Level
@@ -69,7 +68,7 @@ namespace Engine.Models
             set
             {
                 _level = value;
-                OnPropertyChanged("Level");
+                OnPropertyChanged(nameof(Level));
             }
         }
         public int Gold
@@ -78,19 +77,9 @@ namespace Engine.Models
             set
             {
                 _gold = value;
-                OnPropertyChanged("Gold");
+                OnPropertyChanged(nameof(Gold));
             }
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // protected -  visible only inside this class and classes derived from it.
-        // virtual - that it can be overriden in derived classes
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            // if anybody is listening to PropertyChanged, notify them that the property has changed
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

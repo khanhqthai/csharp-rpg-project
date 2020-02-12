@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Engine.Models; // import Player.cs
 using Engine.Factories;
-using System.ComponentModel; // import so we can use  INotifyPropertyChanged
 
 namespace Engine.ViewModels
 {
-    public class GameSession : INotifyPropertyChanged
+    public class GameSession : BaseNotificationClass
     {
 
         private Location _currentLocation;
@@ -21,15 +20,22 @@ namespace Engine.ViewModels
             set 
             {
                 _currentLocation = value;
-                // invoke OnPropertyChange function everytime _currentLocation value is set/updated
-                OnPropertyChanged("CurrentLocation");
-                
+                /*  
+                 *  instead of  OnPropertyChanged("CurrentLocation"); we use nameof();
+                    because if for any reason, we change the CurrrentLocation to CurrentLocation2, visual studio will make the update
+                    to our entire code that uses it, but if we use   OnPropertyChanged("CurrentLocation"); 
+                    we have to mannually update that "CurrentLocation" ourselves    
+                 */
+
+                //invoke OnPropertyChange function everytime _currentLocation value is set/updated
+                OnPropertyChanged(nameof(CurrentLocation));
+
                 // for the HasLocation bools, there is not setter(we can't call OnPropertyChange to update the xaml)
                 // but we can do it here.  When the location is update/set.  We want to notify/update the changes to xaml
-                OnPropertyChanged("HasLocationToNorth");
-                OnPropertyChanged("HasLocationToWest");
-                OnPropertyChanged("HasLocationToEast");
-                OnPropertyChanged("HasLocationToSouth");
+                OnPropertyChanged(nameof(HasLocationToNorth));
+                OnPropertyChanged(nameof(HasLocationToWest));
+                OnPropertyChanged(nameof(HasLocationToEast));
+                OnPropertyChanged(nameof(HasLocationToSouth));
             }
         }
         // Before the player moves North/South/East/West, we want to check if the location exists in our Location List.
@@ -102,11 +108,6 @@ namespace Engine.ViewModels
         }
         
         
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            // if anybody is listening to PropertyChanged, notify them that the property has changed
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+
     }
 }
