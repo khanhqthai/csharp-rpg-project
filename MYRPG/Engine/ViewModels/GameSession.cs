@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Engine.Models; // import Player.cs
+using Engine.Factories;
 
 namespace Engine.ViewModels
 {
@@ -11,6 +12,7 @@ namespace Engine.ViewModels
     {
         public Player currentPlayer { get; set; } // will hold current player object/instance
         public Location currentLocation { get; set; } // will hold players location
+        public World currentWorld { get; set; } // will contain information about the game world
         public GameSession()
         {
             currentPlayer = new Player();
@@ -21,12 +23,14 @@ namespace Engine.ViewModels
             currentPlayer.level = 1;
             currentPlayer.gold = 10000;
 
-            currentLocation = new Location();
-            currentLocation.name = "Home";
-            currentLocation.xCordindate = 0;
-            currentLocation.yCordindate = -1;
-            currentLocation.imageName = "pack://application:,,,/Engine;component/Images/Locations/green-tree.png";
-            currentLocation.description = "A little broken down, But it's home";
+
+            // Our game has a lot of things to instantiate. For this we introduce factory design pattern.
+            // We let the factory handle for creations of objects without exposing logic to the client.
+            WorldFactory worldFactory = new WorldFactory();
+            currentWorld = worldFactory.CreateWorld();
+
+            // 
+            currentLocation = currentWorld.LocationAt(0,0);
         }
 
     }
