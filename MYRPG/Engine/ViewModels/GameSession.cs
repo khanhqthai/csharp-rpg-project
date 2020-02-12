@@ -100,23 +100,36 @@ namespace Engine.ViewModels
         // The function updates current location
         public void MoveNorth() 
         {
-            // added one to yCordinate, to move north
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate + 1);
+            // if true, then move north
+            if (HasLocationToNorth) 
+            { 
+                // added one to yCordinate, to move north
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate + 1);
+            }
         }
         public void MoveWest()
         {
-            // subtract one to from the xCordinate to move west
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCordindate - 1, CurrentLocation.YCordindate);
+            if (HasLocationToWest) 
+            { 
+                // subtract one to from the xCordinate to move west
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCordindate - 1, CurrentLocation.YCordindate);
+            }
         }
         public void MoveEast()
         {
-            // added one to xCordinate to move East
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCordindate + 1, CurrentLocation.YCordindate);
+            if (HasLocationToEast) 
+            {
+                // added one to xCordinate to move East
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCordindate + 1, CurrentLocation.YCordindate);
+            }
         }
         public void MoveSouth()
         {
-            // subtract one from yCordinate to move south
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate - 1);
+            if (HasLocationToSouth) 
+            { 
+                // subtract one from yCordinate to move south
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate - 1);
+            }
         }
         
         
