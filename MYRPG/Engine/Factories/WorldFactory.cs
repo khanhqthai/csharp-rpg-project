@@ -7,12 +7,23 @@ using Engine.Models;
 
 namespace Engine.Factories
 {
-    // This class is not public, we only want to use this inside the Engine project(namespace)
-    // we are going to make WorldFactory class internal, by default class are internal but it is good practice to declare it.
-    // **internal limits	access exclusively to classes defined within the current project assembly
-    internal class WorldFactory
+    /* 
+     * This class is not public, we only want to use this inside the Engine project(namespace)
+     * we are going to make WorldFactory class internal, by default class are internal but it is good practice to declare it.
+     * internal - limits	access exclusively to classes defined within the current project assembly
+     * 
+     * We also are going make this class static, because in our RPG, we will only need one game world. 
+     * We do not need multiple instances of the World. By default all classes are instance classes
+     * unlike the Player class, where there can be  more than one player in the world. 
+     * 
+     * static class can only contain static data members, static methods, and a static constructor
+     * It is not allowed to create objects of the static class.
+     * Static classes are sealed, means you cannot inherit a static class from another class.
+     * static class can only contain static data members and static methods
+    */
+    internal static class WorldFactory
     {
-        internal World CreateWorld() 
+        internal static World CreateWorld() 
         {
            
             World newWorld = new World();

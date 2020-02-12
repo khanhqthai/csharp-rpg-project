@@ -65,22 +65,34 @@ namespace Engine.ViewModels
         public World CurrentWorld { get; set; } // will contain information about the game world
         public GameSession()
         {
-            Player player = new Player();
-            CurrentPlayer = player;
-            CurrentPlayer.Name = "Lord Khanh";
-            CurrentPlayer.CharacterClass = "Warlord";
-            CurrentPlayer.HitPoints = 10;
-            CurrentPlayer.ExpPoints = 0;
-            CurrentPlayer.Level = 1;
-            CurrentPlayer.Gold = 10000;
 
+            /* 
+             * Old way of creating Player object -- we will replace this with named parameter method, see below
+                CurrentPlayer = new Player();
+                CurrentPlayer.Name = "Lord Khanh";
+                CurrentPlayer.CharacterClass = "Warlord";
+                CurrentPlayer.HitPoints = 10;
+                CurrentPlayer.ExpPoints = 0;
+                CurrentPlayer.Level = 1;
+                CurrentPlayer.Gold = 10000;
+            */
+
+            // Named parameter method of creating Player Object, we can do this because the methods are public
+            // It's also nice, because Visual Studio will provide intelisense for the parameters, when using it.
+            CurrentPlayer = new Player
+            {
+                Name = "Lord Khanh",
+                CharacterClass = "Warlord",
+                HitPoints = 10,
+                ExpPoints = 0,
+                Level = 1,
+                Gold = 10000
+            };
 
             // Our game has a lot of things to instantiate. For this we introduce factory design pattern.
             // We let the factory handle for creations of objects without exposing logic to the client.
-            WorldFactory worldFactory = new WorldFactory();
-            CurrentWorld = worldFactory.CreateWorld();
+            CurrentWorld = WorldFactory.CreateWorld();
 
-            // 
             CurrentLocation = CurrentWorld.LocationAt(0,-1);
         }
 
