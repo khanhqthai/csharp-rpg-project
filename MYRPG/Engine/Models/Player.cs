@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel; // included this because we want to ObservableCollection
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,9 @@ using System.Threading.Tasks;
 namespace Engine.Models
 {
 
+    /// <summary>
+    /// Class for player character in the game
+    /// </summary>
     /*  Note: INotifyPropertyChanged is an interface that we will use to update the changes to our View(MainWindow.xaml)
         When we change hitPoints, expPoints..etc.  The changes in are not reflected in our view.  This is wehre INotifyPropertyChanged comes in
         It notify the view that these values have changed.
@@ -81,5 +85,16 @@ namespace Engine.Models
             }
         }
 
+        /* We are using ObservableCollection because it handles all the notifications
+         * We do not need to use OnPropertyChanged() to notify the UI changes
+         * ObservableCollection will do it for us.
+         * Just good to know more ways to solve problems
+        */
+        public ObservableCollection<Item> Inventory  { get; set; }
+
+        public Player() 
+        {
+            Inventory = new ObservableCollection<Item>();
+        }
     }
 }

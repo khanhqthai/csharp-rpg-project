@@ -67,7 +67,7 @@ namespace Engine.ViewModels
         {
 
             /* 
-             * Old way of creating Player object -- we will replace this with named parameter method, see below
+             * Old way of creating Player object
                 CurrentPlayer = new Player();
                 CurrentPlayer.Name = "Lord Khanh";
                 CurrentPlayer.CharacterClass = "Warlord";
@@ -75,24 +75,24 @@ namespace Engine.ViewModels
                 CurrentPlayer.ExpPoints = 0;
                 CurrentPlayer.Level = 1;
                 CurrentPlayer.Gold = 10000;
+             * We will replace this with named parameter method, see below
             */
 
             // Named parameter method of creating Player Object, we can do this because the methods are public
             // It's also nice, because Visual Studio will provide intelisense for the parameters, when using it.
-            CurrentPlayer = new Player
-            {
-                Name = "Lord Khanh",
-                CharacterClass = "Warlord",
-                HitPoints = 10,
-                ExpPoints = 0,
+            CurrentPlayer = new Player { Name = "Lord Khanh", CharacterClass = "Warlord", HitPoints = 10, ExpPoints = 0,
                 Level = 1,
                 Gold = 10000
             };
+
+            // Give player starting item
+            CurrentPlayer.Inventory.Add(ItemFactory.CreateItem(0));
 
             // Our game has a lot of things to instantiate. For this we introduce factory design pattern.
             // We let the factory handle for creations of objects without exposing logic to the client.
             CurrentWorld = WorldFactory.CreateWorld();
 
+           
             CurrentLocation = CurrentWorld.LocationAt(0,-1);
         }
 

@@ -7,19 +7,27 @@ using Engine.Models; // import so we can Item class(Item.cs)
 
 namespace Engine.Factories
 {
-    // this is a static class, because we are just going to use the class and do not instances of it. Similiar to WorldFactory class.
-    // this factory class will create all the items in our game world.  
-    // we use a List to hold thesse items
+    /// <summary>
+    /// Factory class to generate all our Items
+    /// this is a static class, because we are just going to use the class, we don't need instances of it.
+    /// there should only be one factory
+    /// Similiar to WorldFactory class.
+    /// this factory class will create all the items in our game world.  
+    ///  we use a List to hold these items
+    ///  note: this class current public, because GameSession.cs is using it.
+    ///  
+    /// </summary>
     public static class ItemFactory
     {
         private static List<Item> _standardItems;
 
-        /* static class do not constructors because it never instantiate, there no object created, so no constructor called.
-         * but it does have a functions, the first time any one runs anything in the the class call this function.
-         * we will use that to create our items and populate our List(_standardItems)
+        /* static class do not have constructors because it never is instantiated, 
+         * there no object created, so no constructor called.
+         * but it does however for the first time any one runs anything in the the class, a function is called
+         * we will use that to create our items and populate our _standardItems
         */
 
-        // ItemFactory() gets called the first time anything is used inside the ItemFactory class.
+        // ItemFactory() function gets called the first time anything is used inside the ItemFactory class.
         static ItemFactory() 
         {
             _standardItems = new List<Item>();
@@ -27,6 +35,7 @@ namespace Engine.Factories
             _standardItems.Add(new Weapon(1001, "Fine Wooden Stick", 2, 1, 2));
             _standardItems.Add(new Weapon(1002, "Wooden Sword", 3, 1, 3));
             _standardItems.Add(new Item(0,"Jade Pendant",5));
+            _standardItems.Add(new Item(1, "Green Snake Skin", 1));
 
         }
 

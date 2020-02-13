@@ -7,6 +7,9 @@ using Engine.Models;
 
 namespace Engine.Factories
 {
+    /// <summary>
+    /// Class Factory to generate our game world
+    /// </summary>
     /* 
      * This class is not public, we only want to use this inside the Engine project(namespace)
      * we are going to make WorldFactory class internal, by default class are internal but it is good practice to declare it.

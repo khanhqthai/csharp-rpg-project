@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Engine.Models
-{
+{   
+    /// <summary>
+    /// Class describing our location in the game
+    /// </summary>
     public class Location
     {
         public int XCordindate { get; set; }

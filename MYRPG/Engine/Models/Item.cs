@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Engine.Models
 {
+    /// <summary>
+    /// Base class for game items such as weapons,scrolls,armor
+    /// </summary>
     public class Item
-    {
+    {   
         public int ItemTypeID { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }

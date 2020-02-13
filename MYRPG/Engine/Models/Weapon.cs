@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Engine.Models
 {
+    /// <summary>
+    /// Class for our weapons in the game
+    /// </summary>
     public class Weapon : Item
     {
         public int MinDmg { get; set; }
