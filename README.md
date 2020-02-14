@@ -1,2 +1,2 @@
 # csharp-rpg-project
-a basic rpg(Harry Potter themed) project with c#(.net WPF) utilizing the best programming practices.
+a basic 90s rpg(Harry Potter/Medieval themed) project with C#(.NET,WPF) utilizing best programming practices.
