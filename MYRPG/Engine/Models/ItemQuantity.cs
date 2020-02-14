@@ -17,7 +17,7 @@ namespace Engine.Models
     /// </summary>
     /// <param name="ItemID">ID of item</param>
     /// <param name="Quantity">Amount of the item</param>
-    class ItemQuantity
+    public class ItemQuantity
     {
         public int ItemID { get; set; }
         public int Quantity { get; set; }

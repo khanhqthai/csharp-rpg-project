@@ -38,11 +38,17 @@ namespace Engine.Factories
             // add reward item - itemID=1001 for fine wooden stick, quantity = 1
             rewardItems.Add(new ItemQuantity(1001,1));
 
-            // create Quest and added it to our list of quests
+            // create Quests and added it to our list of quests in the game
             _quest.Add(new Quest(0, 
                 "Snake Problem",
                 "Get rid the pesky snakes in the farm  field", 
                 requiredQuestItems, 1, 1, rewardItems));
+            _quest.Add(new Quest(1,
+                "Silk Dreams",
+                "Town merchants love spider silk.",
+                 new List<ItemQuantity> { new ItemQuantity(2, 5) }, 
+                 1, 1,
+                 new List<ItemQuantity> { new ItemQuantity(0, 1) }));
         }
 
         internal static Quest GetQuestByID(int id) 

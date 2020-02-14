@@ -36,6 +36,7 @@ namespace Engine.Factories
             _standardItems.Add(new Weapon(1002, "Wooden Sword", 3, 1, 3));
             _standardItems.Add(new Item(0,"Jade Pendant",5));
             _standardItems.Add(new Item(1, "Green Snake Skin", 1));
+            _standardItems.Add(new Item(2, "Spider Silk", 1));
 
         }
 

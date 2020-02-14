@@ -11,7 +11,7 @@ namespace Engine.Models
     /// Quests have conditions to complete: kill x number of monster or bring back x number of stuff..etc
     /// Quests have rewards: can be gold,items,experience...etc
     /// </summary>
-    class Quest
+    public class Quest
     {
         public int ID { get; set; }
         public string Name { get; set; }

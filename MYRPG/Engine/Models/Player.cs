@@ -85,16 +85,16 @@ namespace Engine.Models
             }
         }
 
-        /* We are using ObservableCollection because it handles all the notifications
-         * We do not need to use OnPropertyChanged() to notify the UI changes
-         * ObservableCollection will do it for us.
-         * Just good to know more ways to solve problems
+        /* We will be using ObservableCollection because it can make notification to the xaml.
+         * Any changes in these collections(Lists) will be updated to the UI
+         * Something we can use for List, instead of using INotifyPropertyChanged interface
         */
         public ObservableCollection<Item> Inventory  { get; set; }
-
+        public ObservableCollection<QuestStatus> Quests { get; set; }
         public Player() 
         {
             Inventory = new ObservableCollection<Item>();
+            Quests = new ObservableCollection<QuestStatus>();
         }
     }
 }

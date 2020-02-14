@@ -36,17 +36,32 @@ namespace Engine.Factories
                 "Town square...It used to be a lot more livelier.",
                 "pack://application:,,,/Engine;component/Images/Locations/town-square-new.png");
 
+            
             newWorld.AddLocation(0,-1,"Home", 
                 "A little broken down, But it's home", 
                 "pack://application:,,,/Engine;component/Images/Locations/home.png");
+            newWorld.LocationAt(0, -1).QuestAvailableHere.Add(QuestFactory.GetQuestByID(1));
 
             newWorld.AddLocation(-1,-1,"Farm House", 
                 "The back bone of this town, farmers.", 
                 "pack://application:,,,/Engine;component/Images/Locations/farm-house.png");
+           
             
             newWorld.AddLocation(-2, -1, "Farm Field",
                 "Looks like the seasons have been well for farming",
                 "pack://application:,,,/Engine;component/Images/Locations/farm-field.png");
+
+            /* add quest to farm field location. 
+             * Note: We are able to use "." QuestAvailableHere() method, 
+             * because newWorld.LocationAt() returns a location object
+             * we can use the property on the object, similiar to "." chaining in JavaScript
+             * 
+             * We can also add quest the following way:
+             *  Location foo = newWorld.location(-1,-1)
+             *  foo.QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
+             * but we would create the temporary foo variable, and not succinct
+             */
+            newWorld.LocationAt(-1, -1).QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
 
             newWorld.AddLocation(-1, 0, "Trade Shop",
                 "One stop shop for all things",

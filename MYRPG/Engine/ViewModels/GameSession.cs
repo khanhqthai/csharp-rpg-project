@@ -8,6 +8,10 @@ using Engine.Factories;
 
 namespace Engine.ViewModels
 {
+    /// <summary>
+    /// Our main class, it is the middle man between, View and Model.  It would be C in MVC.
+    /// Handles all game world logic, creates and runs the game world.
+    /// </summary>
     public class GameSession : BaseNotificationClass
     {
 
@@ -22,9 +26,9 @@ namespace Engine.ViewModels
                 _currentLocation = value;
                 /*  
                  *  instead of  OnPropertyChanged("CurrentLocation"); we use nameof();
-                    because if for any reason, we change the CurrrentLocation to CurrentLocation2, visual studio will make the update
-                    to our entire code that uses it, but if we use   OnPropertyChanged("CurrentLocation"); 
-                    we have to mannually update that "CurrentLocation" ourselves    
+                    because if for any reason, if we change the CurrrentLocation to CurrentLocation2, visual studio will make the update
+                    to our entire code, but if we use   OnPropertyChanged("CurrentLocation"); 
+                    we have to mannually update that "CurrentLocation" to "CurrentLocation2" ourselves    
                  */
 
                 //invoke OnPropertyChange function everytime _currentLocation value is set/updated
@@ -36,8 +40,27 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasLocationToWest));
                 OnPropertyChanged(nameof(HasLocationToEast));
                 OnPropertyChanged(nameof(HasLocationToSouth));
+
+                /* Every time a location is set(moved to) 
+                   we want to automatically give the player the quest available at the location*/
+                GivePlayerQuestAtLocation();
             }
         }
+
+        // adds available quests at location to Player, if player does not already have it.
+        private void GivePlayerQuestAtLocation()
+        {
+            // We check the List of QuestAvailableHere at the location against the Player's List of Quests
+            // We add any quest from the QuestAvailable list that is not already in the Player's List of Quests
+            foreach (Quest quest in CurrentLocation.QuestAvailableHere)
+            {
+                if (!CurrentPlayer.Quests.Any(q=> q.PlayerQuest.ID == quest.ID)) 
+                {
+                    CurrentPlayer.Quests.Add(new QuestStatus(quest));
+                }
+            }
+        }
+
         // Before the player moves North/South/East/West, we want to check if the location exists in our Location List.
         // We will have 4 boolean that tests each direction. 
         // Our View(MainWindow.xaml) will make use of these boolean.
