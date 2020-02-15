@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Engine.Models; // import Models
 using Engine.Factories; // import Factories
+using Engine.EventArgs; // import EventArgs; 
 
 namespace Engine.ViewModels
 {
@@ -14,6 +15,7 @@ namespace Engine.ViewModels
     /// </summary>
     public class GameSession : BaseNotificationClass
     {
+        public event EventHandler<GameMessageEventArgs> OnMessagedRaised;
 
         private Location _currentLocation;
         private Monster _currentMonster;
@@ -51,6 +53,13 @@ namespace Engine.ViewModels
                 // Every time a location is set(moved to) 
                 // we automatically get the monster for the player to fight(if location has a monster)
                 GetMonsterAtLocation();
+
+
+                if (CurrentMonster != null) 
+                {
+                    // If there is a monster at the location, trigger event to display message on xaml
+                    RaiseMessage($"You have encounter a {CurrentMonster.Name}!" );
+                }
             }
         }
         // we are using back property because, we want to use the notification on it
@@ -184,8 +193,14 @@ namespace Engine.ViewModels
                 CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate - 1);
             }
         }
-        
-        
 
+        
+        public void RaiseMessage(string messsage) 
+        {
+            // if there are any subscriber to OnMessagedRaised(if not null)
+            // run the function.  In our case it will be the MainWindow.xaml.OnGameMessagedRaised() function
+            // but any funciton can subscribed(added to ) to event OnMessagedRaised
+            OnMessagedRaised?.Invoke(this, new GameMessageEventArgs(messsage));
+        }
     }
 }

@@ -85,7 +85,7 @@ namespace Engine.Factories
                "pack://application:,,,/Engine;component/Images/Locations/town-gate.png");
 
             newWorld.AddLocation(2, 0, "Forest",
-                       "Spiders roam these woods",
+                       "Goblins roam these woods",
                        "pack://application:,,,/Engine;component/Images/Locations/forest.png");
             newWorld.LocationAt(2, 0).AddMonster(4,100); // add green gobin to forest location
 

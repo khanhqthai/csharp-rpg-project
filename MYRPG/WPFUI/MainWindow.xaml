@@ -63,7 +63,7 @@
         </Grid>
 
         
-        <Grid Grid.Row="1" Grid.Column="1"  Background="RosyBrown">
+        <Grid Grid.Row="1" Grid.Column="1"  Background="BurlyWood">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -72,17 +72,35 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <!--Status Information-->
-            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Black" BorderThickness="2"></Border>
+            <!--Games Status Messages-->
+            <Border Grid.Row="0" Grid.Column="0" Margin="3" BorderBrush="DarkGoldenrod" BorderThickness="2" Grid.RowSpan="2" >
+                <!--In order for us to display messages in the RichTextBox, we will need a name to pass it to
+                our name will be "GamesMessages" defined by x:Name="GameMessages"-->
+                <RichTextBox x:Name="GameMessages" Background="BurlyWood" VerticalScrollBarVisibility="Auto">
+                    <RichTextBox.Resources>
+                        <!--style our paragraph to have no spaces between lines. -->
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
+            </Border>
             
             <!--Location Information-->
-            <Border  Grid.Row="0"  Margin="3" Grid.Column="1" BorderBrush="Gainsboro" BorderThickness="1">
+            <Border  Grid.Row="0"  Margin="3" Grid.Column="1" BorderBrush="DarkGoldenrod" BorderThickness="2">
                 <Grid  >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
+                    <!--style our text to be white for locations -->
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                        </Style>
+                    </Grid.Resources>
+                    
                     <TextBlock 
                         Grid.Row="0" 
                         TextAlignment="Center" 
@@ -101,13 +119,22 @@
                 </Grid>
             </Border>
             <!--Monster Information-->
-            <Border Margin="3" Grid.Row="1" Grid.Column="1" BorderBrush="Gainsboro" BorderThickness="1">
-                <Grid >
+            <Border Margin="3" Grid.Row="1" Grid.Column="1" BorderBrush="DarkGoldenrod" BorderThickness="2" >
+                <Grid  >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
+                    
+                    <!--style our text to be red for monsters-->
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="MediumVioletRed"/>
+                        </Style>
+                    </Grid.Resources>
+                    
+                    
                     <TextBlock 
                         Grid.Row="0"
                         TextAlignment="Center"
