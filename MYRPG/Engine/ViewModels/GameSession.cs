@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Engine.Models; // import Player.cs
-using Engine.Factories;
+using Engine.Models; // import Models
+using Engine.Factories; // import Factories
 
 namespace Engine.ViewModels
 {
@@ -18,7 +18,7 @@ namespace Engine.ViewModels
         private Location _currentLocation;
         public Player CurrentPlayer { get; set; } // will hold current player info
         
-        public Location CurrentLocation  // will hold current location in game
+        public Location CurrentLocation  // will hold current location object
         {
             get { return _currentLocation; }
             set 
@@ -42,7 +42,7 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasLocationToSouth));
 
                 /* Every time a location is set(moved to) 
-                   we want to automatically give the player the quest available at the location*/
+                   we want to automatically give the player the quests available at the location*/
                 GivePlayerQuestAtLocation();
             }
         }
@@ -85,7 +85,7 @@ namespace Engine.ViewModels
 
 
 
-        public World CurrentWorld { get; set; } // will contain information about the game world
+        public World CurrentWorld { get; set; } 
         public GameSession()
         {
 
@@ -108,7 +108,7 @@ namespace Engine.ViewModels
                 Gold = 10000
             };
 
-            // Give player starting item
+            // Add item to player's inventory(starting item)
             CurrentPlayer.Inventory.Add(ItemFactory.CreateItem(0));
 
             // Our game has a lot of things to instantiate. For this we introduce factory design pattern.

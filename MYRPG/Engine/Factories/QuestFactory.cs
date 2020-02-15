@@ -9,9 +9,8 @@ namespace Engine.Factories
 {
     /// <summary>
     /// Factory class to create our quests in the game
-    /// internal - because we only want this to be used in Engine namespace only
-    /// static - because we are just going to use the class, we don't need instances of it.
-    /// there should only be one factory
+    /// internal - because we only want this to be used in Engine.Factories namespace only
+    /// static - because we are not going to instantiate it, but just use the functions in it.
     /// Similiar to WorldFactory class.
     /// </summary>
     internal static class QuestFactory
@@ -29,26 +28,26 @@ namespace Engine.Factories
         static QuestFactory() 
         {
            
-            // Declare items required to complete quest, and  rewards
+            // Declare items list required to complete quest, and  rewards
             List<ItemQuantity> requiredQuestItems = new List<ItemQuantity>();
             List<ItemQuantity> rewardItems = new List<ItemQuantity>();
 
-            // add item requirements - itemID = 1 for snake skin, quantity = 2
-            requiredQuestItems.Add(new ItemQuantity(1,2));
-            // add reward item - itemID=1001 for fine wooden stick, quantity = 1
-            rewardItems.Add(new ItemQuantity(1001,1));
-
-            // create Quests and added it to our list of quests in the game
+        
+            requiredQuestItems.Add(new ItemQuantity(2003, 4)); // mushroom stems, quantity 4
+            rewardItems.Add(new ItemQuantity(1001,1)); // Wooden Stick, quantity 1
+            
+            // create Quests 
             _quest.Add(new Quest(0, 
-                "Snake Problem",
-                "Get rid the pesky snakes in the farm  field", 
+                "Mushroom Problems",
+                "Get rid the pesky mushrooms in the farm  field", 
                 requiredQuestItems, 1, 1, rewardItems));
+
             _quest.Add(new Quest(1,
-                "Silk Dreams",
-                "Town merchants love spider silk.",
-                 new List<ItemQuantity> { new ItemQuantity(2, 5) }, 
+                "Stop the encroachment",
+                "Towns peoples would like you remove the goblins from the forest",
+                 new List<ItemQuantity> { new ItemQuantity(2001, 5) }, 
                  1, 1,
-                 new List<ItemQuantity> { new ItemQuantity(0, 1) }));
+                 new List<ItemQuantity> { new ItemQuantity(1002, 1) })); // Quest item: 5 Goblin Ear, Reward: 1 Wooden Sword
         }
 
         internal static Quest GetQuestByID(int id) 

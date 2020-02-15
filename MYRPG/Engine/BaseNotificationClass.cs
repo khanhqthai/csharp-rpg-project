@@ -9,7 +9,7 @@ namespace Engine
     // When ever a function is used by multiple class.
     // it is a good idea to put it in a base class so everyone can use it.
     // we will do this to the INotifyPropertyChanged interface.
-    // this function notify when a property is changed/updated, we use it to tell the xaml a property has been changed, please update it up the view(xaml)
+    // this function notifies when a property is changed/updated, we use it to tell the xaml a property has been changed, please update it up the view(xaml)
     public class BaseNotificationClass : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

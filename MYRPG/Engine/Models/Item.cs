@@ -23,7 +23,7 @@ namespace Engine.Models
             Price = price;
         }
 
-        // return new Item
+        // return a copy 
         public Item Clone() 
         {
             return new Item(ItemTypeID, Name, Price);

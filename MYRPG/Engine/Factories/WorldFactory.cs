@@ -8,12 +8,12 @@ using Engine.Models;
 namespace Engine.Factories
 {
     /// <summary>
-    /// Class Factory to generate our game world
+    /// Factory Class to generate our game world i.e. locations, items, quests
     /// </summary>
     /* 
      * This class is not public, we only want to use this inside the Engine project(namespace)
      * we are going to make WorldFactory class internal, by default class are internal but it is good practice to declare it.
-     * internal - limits	access exclusively to classes defined within the current project assembly
+     * internal - limits access exclusively to classes defined within the current project assembly
      * 
      * We also are going make this class static, because in our RPG, we will only need one game world. 
      * We do not need multiple instances of the World. By default all classes are instance classes
@@ -59,8 +59,7 @@ namespace Engine.Factories
              * We can also add quest the following way:
              *  Location foo = newWorld.location(-1,-1)
              *  foo.QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
-             * but we would create the temporary foo variable, and not succinct
-             */
+             * but we would create the temporary foo variable */
             newWorld.LocationAt(-1, -1).QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
 
             newWorld.AddLocation(-1, 0, "Trade Shop",

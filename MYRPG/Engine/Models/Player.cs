@@ -12,8 +12,8 @@ namespace Engine.Models
     /// Class for player character in the game
     /// </summary>
     /*  Note: INotifyPropertyChanged is an interface that we will use to update the changes to our View(MainWindow.xaml)
-        When we change hitPoints, expPoints..etc.  The changes in are not reflected in our view.  This is wehre INotifyPropertyChanged comes in
-        It notify the view that these values have changed.
+        When we change hitPoints, expPoints..etc.  The changes in are not reflected in our view.  This is where INotifyPropertyChanged comes in
+        It will notify the view that these values have changed. we will implement  this is our BaseNotifications  class and make available for any class to use.
     */
     public class Player : BaseNotificationClass
     {
@@ -87,7 +87,9 @@ namespace Engine.Models
 
         /* We will be using ObservableCollection because it can make notification to the xaml.
          * Any changes in these collections(Lists) will be updated to the UI
-         * Something we can use for List, instead of using INotifyPropertyChanged interface
+         * You may ask why don't we just use INotifyPropertyChanged interface instead to do the notify.
+         * ObservableCollection is made available from System.Collections.ObjectModel.
+         * Might as well use it.
         */
         public ObservableCollection<Item> Inventory  { get; set; }
         public ObservableCollection<QuestStatus> Quests { get; set; }
