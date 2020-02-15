@@ -17,7 +17,7 @@ namespace Engine.Factories
     internal static class MonsterFactory
     {
 
-        // Creates a monster base on switch case logic, and returns a monster object accordingly
+        // Creates a monster  using switch case logic, and returns a monster object accordingly
         public static Monster GetMonster(int monsterID) 
         {
             switch (monsterID) 

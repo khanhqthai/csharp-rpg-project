@@ -4,12 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFUI"
+        xmlns:viewModels="clr-namespace:Engine.ViewModels;assembly=Engine"
+        d:DataContext="{d:DesignInstance viewModels:GameSession}"
         mc:Ignorable="d"
         FontSize="11pt"
         Title="Dominion" Height="768" Width="1024">
+
+        <!--
+        add the lines:
+        xmlns:viewModels="clr-namespace:Engine.ViewModels;assembly=Engine"
+        d:DataContext="{d:DesignInstance viewModels:GameSession}"
+        This will give use intellisense when editing this xaml file
+        -->
+
     <!-- This turn on or off visibility, if given a boolean-->
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilty"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -21,8 +31,9 @@
             <ColumnDefinition Width="250"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
+        <!---Menu-->
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Menu" Background="MediumPurple"></Label>
+        <!---Player Info-->
         <Grid Grid.Row="1" Grid.Column="0"  Background="Yellow">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -51,7 +62,7 @@
 
         </Grid>
 
-
+        
         <Grid Grid.Row="1" Grid.Column="1"  Background="RosyBrown">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -61,6 +72,10 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
+            <!--Status Information-->
+            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Black" BorderThickness="2"></Border>
+            
+            <!--Location Information-->
             <Border  Grid.Row="0"  Margin="3" Grid.Column="1" BorderBrush="Gainsboro" BorderThickness="1">
                 <Grid  >
                     <Grid.RowDefinitions>
@@ -85,22 +100,38 @@
 
                 </Grid>
             </Border>
+            <!--Monster Information-->
             <Border Margin="3" Grid.Row="1" Grid.Column="1" BorderBrush="Gainsboro" BorderThickness="1">
                 <Grid >
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock 
-                        Grid.Row="1"
+                        Grid.Row="0"
                         TextAlignment="Center"
-                        Text="Enemy Remaining Hit Points"/>
+                        Text="{Binding CurrentMonster.Name}"/>
+                    <Image Grid.Row="1" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           Height="125"
+                           Width="125"
+                           Source="{Binding CurrentMonster.ImageName}"/>
+                    <StackPanel  Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal"
+                                 Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}">
+                        <TextBlock Text="HP: "/>
+                        <TextBlock 
+                        TextAlignment="Center"
+                        Text="{Binding CurrentMonster.HitPoints}"/>
+                    </StackPanel>
+  
                 </Grid>
             </Border>
 
 
         </Grid>
-
+        <!--Inventory/Quests/Map-->
         <Grid Grid.Row="2" Grid.Column="0"  Background="LightSlateGray">
             <TabControl>
                 <TabItem Header="Inventory">
@@ -147,16 +178,16 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Row="0" Margin="10" Height="30" Width="75" Grid.Column="1" Content="North" HorizontalAlignment="Center"
                         Click="OnClick_MoveNorth"
-                        Visibility="{Binding HasLocationToNorth, Converter={StaticResource BooleanToVisibilty}}"/>
+                        Visibility="{Binding HasLocationToNorth, Converter={StaticResource BooleanToVisibility}}"/>
                 <Button Grid.Row="1" Margin="10" Height="30" Width="75" Grid.Column="0" Content="West" HorizontalAlignment="Center"
                         Click="OnClick_MoveWest"
-                        Visibility="{Binding HasLocationToWest, Converter={StaticResource BooleanToVisibilty}}"/>
+                        Visibility="{Binding HasLocationToWest, Converter={StaticResource BooleanToVisibility}}"/>
                 <Button Grid.Row="1" Margin="10" Height="30" Width="75" Grid.Column="2" Content="East" HorizontalAlignment="Center"
                         Click="OnClick_MoveEast"
-                        Visibility="{Binding HasLocationToEast, Converter={StaticResource BooleanToVisibilty}}"/>
+                        Visibility="{Binding HasLocationToEast, Converter={StaticResource BooleanToVisibility}}"/>
                 <Button Grid.Row="2" Margin="10" Height="30" Width="75" Grid.Column="1" Content="South" HorizontalAlignment="Center"
                         Click="OnClick_MoveSouth"
-                        Visibility="{Binding HasLocationToSouth, Converter={StaticResource BooleanToVisibilty}}"/>
+                        Visibility="{Binding HasLocationToSouth, Converter={StaticResource BooleanToVisibility}}"/>
 
 
             </Grid >

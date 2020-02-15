@@ -16,9 +16,12 @@ namespace Engine.ViewModels
     {
 
         private Location _currentLocation;
-        public Player CurrentPlayer { get; set; } // will hold current player info
-        
-        public Location CurrentLocation  // will hold current location object
+        private Monster _currentMonster;
+
+        public Player CurrentPlayer { get; set; } 
+        public World CurrentWorld { get; set; }
+
+        public Location CurrentLocation  
         {
             get { return _currentLocation; }
             set 
@@ -41,9 +44,27 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasLocationToEast));
                 OnPropertyChanged(nameof(HasLocationToSouth));
 
-                /* Every time a location is set(moved to) 
-                   we want to automatically give the player the quests available at the location*/
+                // Every time a location is set(moved to) 
+                // we want to automatically give the player the quests available at the location
                 GivePlayerQuestAtLocation();
+
+                // Every time a location is set(moved to) 
+                // we automatically get the monster for the player to fight(if location has a monster)
+                GetMonsterAtLocation();
+            }
+        }
+        // we are using back property because, we want to use the notification on it
+        // need to update monster info(mainly to display HP) to the UI
+        public Monster CurrentMonster
+        {
+            get { return _currentMonster; }
+            set 
+            {
+                _currentMonster = value;
+                
+                // Notify UI, CurrentMonster, HasMonster value has changed
+                OnPropertyChanged(nameof(CurrentMonster));
+                OnPropertyChanged(nameof(HasMonster));
             }
         }
 
@@ -59,6 +80,12 @@ namespace Engine.ViewModels
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
                 }
             }
+        }
+
+        // get monster at location
+        private void GetMonsterAtLocation() 
+        {
+            CurrentMonster = CurrentLocation.GetMonster();
         }
 
         // Before the player moves North/South/East/West, we want to check if the location exists in our Location List.
@@ -82,10 +109,11 @@ namespace Engine.ViewModels
             get { return CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate - 1) != null; }
         }
 
+        // returns true, when location has CurrentMonster set
+        public bool HasMonster => CurrentMonster != null;
 
-
-
-        public World CurrentWorld { get; set; } 
+        
+ 
         public GameSession()
         {
 
@@ -101,8 +129,8 @@ namespace Engine.ViewModels
              * We will replace this with named parameter method, see below
             */
 
-            // Named parameter method of creating Player Object, we can do this because the methods are public
-            // It's also nice, because Visual Studio will provide intelisense for the parameters, when using it.
+            // using Named parameter method to create Player Object
+            // because Visual Studio will provide intellisense for the parameters, when using it.
             CurrentPlayer = new Player { Name = "Lord Khanh", CharacterClass = "Warlord", HitPoints = 10, ExpPoints = 0,
                 Level = 1,
                 Gold = 10000
@@ -115,8 +143,10 @@ namespace Engine.ViewModels
             // We let the factory handle for creations of objects without exposing logic to the client.
             CurrentWorld = WorldFactory.CreateWorld();
 
-           
+            // set current location
             CurrentLocation = CurrentWorld.LocationAt(0,-1);
+            
+
         }
 
         // Define our movement functions below. 

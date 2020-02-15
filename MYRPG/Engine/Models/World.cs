@@ -23,7 +23,7 @@ namespace Engine.Models
         // returns a location object, if it finds it inside the _location list, else return null.
         public Location LocationAt(int xCordinate, int yCordinate) 
         {
-            // loop through our _location list, if the cordinate matche return the location, else return null
+            // loop through our _location list, if the cordinate match return the location, else return null
             foreach (Location loc in _locations) 
             {
                 if (loc.XCordindate == xCordinate && loc.YCordindate == yCordinate) {

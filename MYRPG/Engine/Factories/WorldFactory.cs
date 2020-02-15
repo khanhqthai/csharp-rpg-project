@@ -8,7 +8,7 @@ using Engine.Models;
 namespace Engine.Factories
 {
     /// <summary>
-    /// Factory Class to generate our game world i.e. locations, items, quests
+    /// WorldFactory Class - builds locations, quests, monsters
     /// </summary>
     /* 
      * This class is not public, we only want to use this inside the Engine project(namespace)
@@ -61,6 +61,8 @@ namespace Engine.Factories
              *  foo.QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
              * but we would create the temporary foo variable */
             newWorld.LocationAt(-1, -1).QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
+            newWorld.LocationAt(-1, -1).AddMonster(2,100); // add mushroom monster to Farmer's Field
+
 
             newWorld.AddLocation(-1, 0, "Trade Shop",
                 "One stop shop for all things",
@@ -85,6 +87,7 @@ namespace Engine.Factories
             newWorld.AddLocation(2, 0, "Forest",
                        "Spiders roam these woods",
                        "pack://application:,,,/Engine;component/Images/Locations/forest.png");
+            newWorld.LocationAt(2, 0).AddMonster(4,100); // add green gobin to forest location
 
             newWorld.AddLocation(3, 0, "Mountain Foothill",
                "Proceed with caution",
