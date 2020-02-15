@@ -17,7 +17,7 @@ namespace Engine.Models
     */
     public class Player : BaseNotificationClass
     {
-
+        #region properties
         private String _name;
         private String _characterClass;
         private int _hitPoints;
@@ -93,10 +93,31 @@ namespace Engine.Models
         */
         public ObservableCollection<Item> Inventory  { get; set; }
         public ObservableCollection<QuestStatus> Quests { get; set; }
+
+        /* List of all weapons in they player's inventory
+         * We are not going to use a getter or setter here, but instead use LINQ  get the values
+         * We also need to notify the UI of any changes to our weapons list.
+         * We will do it AddItemToInventory()
+         * Note: when using LINQ the queries, it does not execuate till it is needed(Deferred Execution).
+         *       "Inventory.Where(i => i is Weapon)" will not be ran till it is being use.
+         *       So we call ToList() to force that execution and materialize the results.
+         *       Why deferred execution? it's for speed 
+         */
+        public List<Item> Weapons => Inventory.Where(i => i is Weapon).ToList();
+        #endregion
+
         public Player() 
         {
             Inventory = new ObservableCollection<Item>();
             Quests = new ObservableCollection<QuestStatus>();
+        }
+
+        // Any time item is added to the inventory
+        // we notify the UI of the changes
+        public void AddItemToInventory(Item item) 
+        {
+            Inventory.Add(item);
+            OnPropertyChanged(nameof(Weapons));
         }
     }
 }

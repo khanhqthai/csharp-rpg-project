@@ -54,10 +54,15 @@ namespace Engine.Factories
 
             if (standardItem != null) 
             {
+
                 /* normally we would return the item, but we want to be able to modify this item in the future.
                  * like add a gem to the item, or upgrade it, trade the item.  We want  Player to have it's own unique item.
-                 * We can do this by making a copy of it or often called cloning.
-                 * We will modify the Item class to add a cloning function */
+                 * We can do this by making a copy of it, or often called cloning.
+                 */
+                if (standardItem is Weapon) {
+                    // cast stanardItem as Weapon so we can use Weapon.Clone() function instead of Item.Clone();
+                    return (standardItem as Weapon).Clone();
+                }
                 return standardItem.Clone();
             
             }

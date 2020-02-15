@@ -63,7 +63,7 @@ namespace WPFUI
         {
            
             GameMessages.Document.Blocks.Add(new Paragraph(new Run(e.Message)));
-           // GameMessages.ScrollToEnd();
+            GameMessages.ScrollToEnd();
         }
 
     }

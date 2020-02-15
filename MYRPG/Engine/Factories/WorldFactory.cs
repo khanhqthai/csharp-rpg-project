@@ -60,8 +60,8 @@ namespace Engine.Factories
              *  Location foo = newWorld.location(-1,-1)
              *  foo.QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
              * but we would create the temporary foo variable */
-            newWorld.LocationAt(-1, -1).QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
-            newWorld.LocationAt(-1, -1).AddMonster(2,100); // add mushroom monster to Farmer's Field
+            newWorld.LocationAt(-2, -1).QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
+            newWorld.LocationAt(-2, -1).AddMonster(2,100); // add mushroom monster to Farmer's Field
 
 
             newWorld.AddLocation(-1, 0, "Trade Shop",
