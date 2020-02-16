@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Engine.Models; // import Models
 using Engine.Factories; // import Factories
 using Engine.EventArgs; // import EventArgs; 
+using System.Diagnostics;
 
 namespace Engine.ViewModels
 {
@@ -22,6 +23,7 @@ namespace Engine.ViewModels
 
         public Player CurrentPlayer { get; set; } 
         public World CurrentWorld { get; set; }
+        public Weapon CurrentWeapon { get; set; }
 
         public Location CurrentLocation  
         {
@@ -122,7 +124,7 @@ namespace Engine.ViewModels
         public bool HasMonster => CurrentMonster != null;
 
         
- 
+        
         public GameSession()
         {
 
@@ -146,7 +148,9 @@ namespace Engine.ViewModels
             };
 
             // Add item to player's inventory(starting item)
-            CurrentPlayer.Inventory.Add(ItemFactory.CreateItem(0));
+            CurrentPlayer.Inventory.Add(ItemFactory.CreateItem(0)); // pendant
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateItem(1001)); // wooden stick
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateItem(1002)); // wooden sword
 
             // Our game has a lot of things to instantiate. For this we introduce factory design pattern.
             // We let the factory handle for creations of objects without exposing logic to the client.
@@ -194,12 +198,86 @@ namespace Engine.ViewModels
             }
         }
 
+        // logic for our game combat.
+        public void AttackCurrentMonster() 
+        {
+            // Guard clause - check the value needed exists before proceeding
+            // In this case, we need CurrentWeapon to be set.
+            if (CurrentWeapon == null) 
+            {
+                RaiseMessage("Select a weapon to attack with.");
+                // exit our function
+                return;
+            }
+
+            // determine damage to monster(In most rpg board games, this would be the dice roll)
+            int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinDmg, CurrentWeapon.MaxDmg);
+
+            if (damageToMonster == 0)
+            {
+                RaiseMessage($"Your attack missed the {CurrentMonster.Name}.");
+            }
+            else 
+            {
+                CurrentMonster.HitPoints -= damageToMonster;
+                RaiseMessage($"Your attack does {damageToMonster} damage to the {CurrentMonster.Name}");
+            }
+
+            // If monster is killed, collect loot and experience
+            if (CurrentMonster.HitPoints <= 0)
+            {
+                RaiseMessage($"You have slained {CurrentMonster.Name}!");
+                CurrentPlayer.ExpPoints += CurrentMonster.RewardExpPoints; // Get experience
+                RaiseMessage($"You have gained {CurrentMonster.RewardExpPoints} experience points!"); // raise message to display to xaml
+
+                CurrentPlayer.Gold += CurrentMonster.RewardGold; // Get gold
+                RaiseMessage($"You picked up {CurrentMonster.RewardGold} gold!");
+
+                // loot monster's inventory
+                foreach (ItemQuantity itemQuantity in CurrentMonster.Inventory)
+                {
+                    Item item = ItemFactory.CreateItem(itemQuantity.ItemID);
+                    CurrentPlayer.AddItemToInventory(item);
+                    RaiseMessage($"You looted {itemQuantity.Quantity} {item.Name} from {CurrentMonster.Name}");
+                }
+
+                // Spawn another monster to fight
+                GetMonsterAtLocation();
+            }
+            else
+            {
+                // if monster still alive, monster fights back
+                int damageToPlayer = RandomNumberGenerator.NumberBetween(CurrentMonster.MinDamage, CurrentMonster.MaxDamage);
+
+                if (damageToPlayer == 0)
+                {
+                    RaiseMessage($"{CurrentMonster.Name}'s attack miss");
+                }
+                else 
+                {
+                    CurrentPlayer.HitPoints -= damageToPlayer;
+                    RaiseMessage($"{CurrentMonster.Name}'s attack does {damageToPlayer} damage!");
+                }
+
+                // if player is killed, spawn player at Home location and restore Hit Points
+                if (CurrentPlayer.HitPoints <=0) 
+                {
+                    RaiseMessage($"You have been killed by {CurrentMonster.Name}!");
+
+                    CurrentLocation = CurrentWorld.LocationAt(0, -1);
+                    CurrentPlayer.HitPoints = CurrentPlayer.Level * 10;
+                }
+
+            }
+
+        }
         
+
         public void RaiseMessage(string messsage) 
         {
-            // if there are any subscriber to OnMessagedRaised(if not null)
-            // run the function.  In our case it will be the MainWindow.xaml.OnGameMessagedRaised() function
-            // but any funciton can subscribed(added to ) to event OnMessagedRaised
+            // if there are any subscriber to OnMessagedRaised, run the function
+            // In our case it will be the MainWindow.xaml.OnGameMessagedRaised() function
+            // but any funciton can be subscribed(added to) to event OnMessagedRaised 
             OnMessagedRaised?.Invoke(this, new GameMessageEventArgs(messsage));
         }
     }

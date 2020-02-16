@@ -58,6 +58,11 @@ namespace WPFUI
             _gamesSession.MoveSouth();
         }
 
+        private void OnClick_AttackMonster(object sender, RoutedEventArgs e) 
+        {
+            _gamesSession.AttackCurrentMonster();
+        }
+
         // Display GameMessageEventArgs to xaml 
         private void OnGameMessagedRaised(object sender, GameMessageEventArgs e) 
         {
@@ -65,6 +70,7 @@ namespace WPFUI
             GameMessages.Document.Blocks.Add(new Paragraph(new Run(e.Message)));
             GameMessages.ScrollToEnd();
         }
+
 
     }
 }

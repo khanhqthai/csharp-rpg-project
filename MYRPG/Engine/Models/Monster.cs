@@ -26,29 +26,32 @@ namespace Engine.Models
         public int HitPoints 
         {
             get { return _hitPoints; }
-            private set 
+            set 
             {
-
                 _hitPoints = value;
-                // when hits points change
+                // notify to xaml hit changed
                 OnPropertyChanged(nameof(HitPoints));
             }
         }
         public string Name { get; set; }
         public string ImageName { get; set; }
         public int MaxHitPoints { get; set; }
+        public int MinDamage { get; set; }
+        public int MaxDamage { get; set; }
         public int RewardExpPoints { get; set; }
         public int RewardGold { get; set; }
         public ObservableCollection<ItemQuantity> Inventory { get; set; }
 
         // Monster constructor
-        public Monster(string name, string imageName, int maxHitPoints, int hitPoints,
+        public Monster(string name, string imageName, int maxHitPoints, int hitPoints, int minDamage, int maxDamage,
             int rewardExpPoints, int rewardGold) 
         {
             Name = name;
             ImageName = string.Format("pack://application:,,,/Engine;component/Images/Monsters/{0}", imageName);
             MaxHitPoints = maxHitPoints;
             HitPoints = hitPoints;
+            MinDamage = minDamage;
+            MaxDamage = maxDamage;
             RewardExpPoints = rewardExpPoints;
             RewardGold = rewardGold;
             Inventory = new ObservableCollection<ItemQuantity>(); // assign empty List so we can add items to it.

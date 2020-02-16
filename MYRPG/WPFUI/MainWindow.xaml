@@ -183,7 +183,7 @@
         </Grid>
         
         
-        <Grid Grid.Row="2" Grid.Column="1"  Background="SaddleBrown">
+        <Grid Grid.Row="2" Grid.Column="1"  Background="SaddleBrown" Height="225" VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -191,7 +191,37 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="255"/>
             </Grid.ColumnDefinitions>
+            
+            <!--Combat Controls -->
+            <Grid Grid.Row="0" Grid.Column="0" 
+                  Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}" 
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <!-- We will use the ID passed here to look the weapon in our GamesSession-->
+                <ComboBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding CurrentPlayer.Weapons}"
+                          SelectedItem="{Binding CurrentWeapon}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath=""/>
+                <Button Grid.Row="0" Grid.Column="2"
+                        Content="use"
+                        Click="OnClick_AttackMonster"/>
 
+            </Grid>
+            <!-- NSEW Controls-->
             <Grid Grid.Row="0" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
