@@ -119,5 +119,30 @@ namespace Engine.Models
             Inventory.Add(item);
             OnPropertyChanged(nameof(Weapons));
         }
+        // Removes item from inventory 
+        public void RemoveItemFromInventory(Item item) 
+        {
+            // when we remove item, it will notify the changes because Item is an ObservableCollection
+            Inventory.Remove(item);
+            // some the items are weapons, we need to notify the changes..since Weapon is not an ObservableCollection
+            OnPropertyChanged(nameof(Weapons)); 
+        }
+
+        
+        public bool HasAllTheseItems(List<ItemQuantity> items) 
+        {
+            // We pass in List<ItemQuantity> - which is the items and quantity needed
+            foreach (ItemQuantity item in items) 
+            {
+                // We check items,quantity needed against what's in Player's inventory
+                if (Inventory.Count(i => i.ItemTypeID == item.ItemID) < item.Quantity) 
+                {
+                    // return false if missing any item.
+                    return false;
+                }   
+            }
+            // if we go through the list and none of them return false, this means the player has all the items
+            return true;
+        }
     }
 }

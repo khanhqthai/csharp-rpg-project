@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,12 +46,14 @@
     <Compile Include="BaseNotificationClass.cs" />
     <Compile Include="EventArgs\GameMessageEventArgs.cs" />
     <Compile Include="Factories\ItemFactory.cs" />
+    <Compile Include="Factories\MerchantFactory.cs" />
     <Compile Include="Factories\MonsterFactory.cs" />
     <Compile Include="Factories\QuestFactory.cs" />
     <Compile Include="Factories\WorldFactory.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemQuantity.cs" />
     <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Merchant.cs" />
     <Compile Include="Models\Monster.cs" />
     <Compile Include="Models\MonsterEncounter.cs" />
     <Compile Include="Models\Player.cs" />

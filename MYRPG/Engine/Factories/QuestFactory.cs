@@ -39,7 +39,7 @@ namespace Engine.Factories
             // create Quests 
             _quest.Add(new Quest(0, 
                 "Mushroom Problems",
-                "Get rid the pesky mushrooms in the farm  field", 
+                "Get rid the pesky mushrooms in the Farm  Field", 
                 requiredQuestItems, 1, 1, rewardItems));
 
             _quest.Add(new Quest(1,

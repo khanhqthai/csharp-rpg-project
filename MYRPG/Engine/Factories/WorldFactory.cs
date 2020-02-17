@@ -34,24 +34,19 @@ namespace Engine.Factories
             // Create locations for the game world
             newWorld.AddLocation(0,0,"Town Square",
                 "Town square...It used to be a lot more livelier.",
-                "pack://application:,,,/Engine;component/Images/Locations/town-square-new.png");
+                "town-square-new.png");
 
             
             newWorld.AddLocation(0,-1,"Home", 
                 "A little broken down, But it's home", 
-                "pack://application:,,,/Engine;component/Images/Locations/home.png");
+                "home.png");
             newWorld.LocationAt(0, -1).QuestAvailableHere.Add(QuestFactory.GetQuestByID(1));
 
             newWorld.AddLocation(-1,-1,"Farm House", 
                 "The back bone of this town, farmers.", 
-                "pack://application:,,,/Engine;component/Images/Locations/farm-house.png");
-           
-            
-            newWorld.AddLocation(-2, -1, "Farm Field",
-                "Looks like the seasons have been well for farming",
-                "pack://application:,,,/Engine;component/Images/Locations/farm-field.png");
+                "farm-house.png");
 
-            /* add quest to farm field location. 
+            /* add quest to Farm House location. 
              * Note: We are able to use "." QuestAvailableHere() method, 
              * because newWorld.LocationAt() returns a location object
              * we can use the property on the object, similiar to "." chaining in JavaScript
@@ -60,13 +55,19 @@ namespace Engine.Factories
              *  Location foo = newWorld.location(-1,-1)
              *  foo.QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
              * but we would create the temporary foo variable */
-            newWorld.LocationAt(-2, -1).QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
+            newWorld.LocationAt(-1, -1).QuestAvailableHere.Add(QuestFactory.GetQuestByID(0));
+
+
+            newWorld.AddLocation(-2, -1, "Farm Field",
+                "Looks like the seasons have been well for farming",
+                "farm-field.png");
             newWorld.LocationAt(-2, -1).AddMonster(2,100); // add mushroom monster to Farmer's Field
 
 
-            newWorld.AddLocation(-1, 0, "Trade Shop",
+            newWorld.AddLocation(-1, 0, "Merchant Shop",
                 "One stop shop for all things",
                 "pack://application:,,,/Engine;component/Images/Locations/trader.png");
+            newWorld.LocationAt(-1,0).merchantHere = MerchantFactory.getMerchantByName("Tim")
 
             newWorld.AddLocation(0, 1, "Herbal Hut",
                 "Old school smoke shop",

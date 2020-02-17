@@ -16,7 +16,9 @@ namespace Engine.Factories
     /// </summary>
     internal static class ItemFactory
     {
-        private static List<Item> _standardItems;
+        // readonly - because we only want ItemFactory to be able to set it here
+        // or only insinde a constructor.
+        private static readonly List<Item> _standardItems = new List<Item>();
 
         /* static class do not have constructors because it is never instantiated, 
          * there no objects created, so no constructor called.
@@ -28,7 +30,6 @@ namespace Engine.Factories
         // This is where we will generate our items for our game world.
         static ItemFactory() 
         {
-            _standardItems = new List<Item>();
             _standardItems.Add(new Weapon(1000,"Wooden Stick",1,1,1));
             _standardItems.Add(new Weapon(1001, "Fine Wooden Stick", 2, 1, 2));
             _standardItems.Add(new Weapon(1002, "Wooden Sword", 3, 1, 3));

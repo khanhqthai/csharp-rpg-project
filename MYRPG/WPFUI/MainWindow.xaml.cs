@@ -22,11 +22,12 @@ namespace WPFUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private GameSession _gamesSession;
+        // readonly - because we only MainWindow to be able to declare it here or inside a constructor.
+        // we can never assign a value to it or accidently override somewhere else.
+        private readonly GameSession _gamesSession = new GameSession();
         public MainWindow()
         {
             InitializeComponent();
-            _gamesSession = new GameSession();
 
             // When our UI(xaml) is constructed/rendered
             // we add the function OnGameMessagedRaised() to _gamesSession.OnMessagedRaised

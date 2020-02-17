@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Engine.Models; // import Models
-using Engine.Factories; // import Factories
-using Engine.EventArgs; // import EventArgs; 
+using Engine.Models; 
+using Engine.Factories; 
+using Engine.EventArgs; 
 using System.Diagnostics;
 
 namespace Engine.ViewModels
@@ -20,6 +20,7 @@ namespace Engine.ViewModels
 
         private Location _currentLocation;
         private Monster _currentMonster;
+        private Merchant _currentMerchant;
 
         public Player CurrentPlayer { get; set; } 
         public World CurrentWorld { get; set; }
@@ -41,25 +42,29 @@ namespace Engine.ViewModels
                 //invoke OnPropertyChange function everytime _currentLocation value is set/updated
                 OnPropertyChanged(nameof(CurrentLocation));
 
-                // for the HasLocation bools, there is not setter(we can't call OnPropertyChange to update the xaml)
+                // for the HasLocation bools, there is no setter(we can't call OnPropertyChange to update the xaml)
                 // but we can do it here.  When the location is update/set.  We want to notify/update the changes to xaml
                 OnPropertyChanged(nameof(HasLocationToNorth));
                 OnPropertyChanged(nameof(HasLocationToWest));
                 OnPropertyChanged(nameof(HasLocationToEast));
                 OnPropertyChanged(nameof(HasLocationToSouth));
 
-                // Every time a location is set(moved to) 
+                // Every time the player move to a location 
                 // we want to automatically give the player the quests available at the location
                 GivePlayerQuestAtLocation();
 
-                // Every time a location is set(moved to) 
+                // Every time the player move to a location 
                 // we automatically get the monster for the player to fight(if location has a monster)
                 GetMonsterAtLocation();
 
+                // Every time the player move to a location 
+                // We check if the player has the required items to complete the quest at the location.
+                QuestCompleteAtLocation();
 
                 if (CurrentMonster != null) 
                 {
                     // If there is a monster at the location, trigger event to display message on xaml
+                    RaiseMessage("****");
                     RaiseMessage($"You have encounter a {CurrentMonster.Name}!" );
                 }
             }
@@ -79,6 +84,8 @@ namespace Engine.ViewModels
             }
         }
 
+
+
         // adds available quests at location to Player, if player does not already have it.
         private void GivePlayerQuestAtLocation()
         {
@@ -86,9 +93,27 @@ namespace Engine.ViewModels
             // We add any quest from the QuestAvailable list that is not already in the Player's List of Quests
             foreach (Quest quest in CurrentLocation.QuestAvailableHere)
             {
-                if (!CurrentPlayer.Quests.Any(q=> q.PlayerQuest.ID == quest.ID)) 
+                if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.ID == quest.ID))
                 {
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
+                    RaiseMessage("****");
+                    RaiseMessage($"You recieve the '{quest.Name}' quest!");
+                    RaiseMessage($" {quest.Description}");
+
+                    RaiseMessage("This quest requires: ");
+                    foreach (ItemQuantity itemQuantity in quest.RequiredQuestItems)
+                    {
+                        RaiseMessage($" {itemQuantity.Quantity} {ItemFactory.CreateItem(itemQuantity.ItemID).Name}");
+                    }
+                    RaiseMessage(" to complete. ");
+                    RaiseMessage("Your reward will be: ");
+                    RaiseMessage($" {quest.RewardExpPoints} experience points.");
+                    RaiseMessage($" {quest.RewardGold} gold.");
+                    foreach (ItemQuantity itemQuantity in quest.RewardItems)
+                    {
+                        RaiseMessage($" {itemQuantity.Quantity} {ItemFactory.CreateItem(itemQuantity.ItemID).Name}");
+                    }
+
                 }
             }
         }
@@ -97,6 +122,66 @@ namespace Engine.ViewModels
         private void GetMonsterAtLocation() 
         {
             CurrentMonster = CurrentLocation.GetMonster();
+        }
+        /// <summary>
+        /// 1. Check if player meets quest requirement items, if so give player the quest's reward
+        /// 2. Removes  quest requirement items from player's inventory. 
+        /// </summary>
+        private void QuestCompleteAtLocation() 
+        {
+             
+            // loop through each quest at location
+            foreach (Quest quest in CurrentLocation.QuestAvailableHere) 
+            {
+                // Check for  incompleted quests
+                QuestStatus questToComplete = 
+                    CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.ID == quest.ID && !q.IsCompleted);
+                
+                if (questToComplete != null) 
+                {
+             
+                    if (CurrentPlayer.HasAllTheseItems(quest.RequiredQuestItems))
+                    {
+                        // remove the required quest items from player's inventory
+                        foreach (ItemQuantity itemQuantity in quest.RequiredQuestItems) 
+                        {
+                            // we'll need to loop the total amount and remove it.
+                            for (int i = 0; i < itemQuantity.Quantity; i++)
+                            {
+                                CurrentPlayer.RemoveItemFromInventory(CurrentPlayer.Inventory.First(item => item.ItemTypeID == itemQuantity.ItemID));
+                            }
+                          
+                        }
+                        RaiseMessage("****");
+                        RaiseMessage($"You completed the '{quest.Name}' quest!");
+
+                        // give player the rewards for completing the quest
+                        CurrentPlayer.ExpPoints += quest.RewardExpPoints;
+                        RaiseMessage($"You gained {quest.RewardExpPoints} experience points!");
+
+                        CurrentPlayer.Gold += quest.RewardGold;
+                        RaiseMessage($"You recieved {quest.RewardGold} gold!");
+
+                        foreach (ItemQuantity itemQuantity in quest.RewardItems)
+                        {
+                            for (int i = 0; i< itemQuantity.Quantity; i++ ) 
+                            {
+                                Item rewardItem = ItemFactory.CreateItem(itemQuantity.ItemID);
+                                CurrentPlayer.AddItemToInventory(rewardItem);
+                                RaiseMessage($"You recieved a {rewardItem.Name}!");
+                            }
+                            
+                        }
+
+                        // Mark the Quest completed
+                        questToComplete.IsCompleted = true;
+                    }
+
+
+                }
+
+
+            }
         }
 
         // Before the player moves North/South/East/West, we want to check if the location exists in our Location List.
@@ -107,18 +192,15 @@ namespace Engine.ViewModels
         {   //return True if not null
             get { return CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate + 1) != null ; }
         }
-        public bool HasLocationToWest
-        {   //return True if not null
-            get { return CurrentWorld.LocationAt(CurrentLocation.XCordindate - 1, CurrentLocation.YCordindate) != null; }
-        }
-        public bool HasLocationToEast
-        {   //return True if not null
-            get { return CurrentWorld.LocationAt(CurrentLocation.XCordindate + 1, CurrentLocation.YCordindate) != null; }
-        }
-        public bool HasLocationToSouth
-        {   //return True if not null
-            get { return CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate - 1) != null; }
-        }
+
+        // we can write the above function using lambda expression.  lambda expression were introduced in C#3.
+        // just makes our code cleaner.
+        public bool HasLocationToWest => 
+            CurrentWorld.LocationAt(CurrentLocation.XCordindate - 1, CurrentLocation.YCordindate) != null;
+        public bool HasLocationToEast => 
+            CurrentWorld.LocationAt(CurrentLocation.XCordindate + 1, CurrentLocation.YCordindate) != null;
+        public bool HasLocationToSouth => 
+            CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate - 1) != null;
 
         // returns true, when location has CurrentMonster set
         public bool HasMonster => CurrentMonster != null;
@@ -127,7 +209,7 @@ namespace Engine.ViewModels
         
         public GameSession()
         {
-
+             
             /* 
              * Old way of creating Player object
                 CurrentPlayer = new Player();
@@ -205,6 +287,7 @@ namespace Engine.ViewModels
             // In this case, we need CurrentWeapon to be set.
             if (CurrentWeapon == null) 
             {
+                RaiseMessage("*****");
                 RaiseMessage("Select a weapon to attack with.");
                 // exit our function
                 return;
@@ -215,17 +298,21 @@ namespace Engine.ViewModels
 
             if (damageToMonster == 0)
             {
+                RaiseMessage("*****");
                 RaiseMessage($"Your attack missed the {CurrentMonster.Name}.");
+                
             }
             else 
             {
                 CurrentMonster.HitPoints -= damageToMonster;
+                RaiseMessage("****");
                 RaiseMessage($"Your attack does {damageToMonster} damage to the {CurrentMonster.Name}");
             }
 
             // If monster is killed, collect loot and experience
             if (CurrentMonster.HitPoints <= 0)
             {
+                RaiseMessage("****");
                 RaiseMessage($"You have slained {CurrentMonster.Name}!");
                 CurrentPlayer.ExpPoints += CurrentMonster.RewardExpPoints; // Get experience
                 RaiseMessage($"You have gained {CurrentMonster.RewardExpPoints} experience points!"); // raise message to display to xaml
@@ -251,10 +338,12 @@ namespace Engine.ViewModels
 
                 if (damageToPlayer == 0)
                 {
+                    RaiseMessage("****");
                     RaiseMessage($"{CurrentMonster.Name}'s attack miss");
                 }
                 else 
                 {
+                    RaiseMessage("****");
                     CurrentPlayer.HitPoints -= damageToPlayer;
                     RaiseMessage($"{CurrentMonster.Name}'s attack does {damageToPlayer} damage!");
                 }
@@ -262,6 +351,7 @@ namespace Engine.ViewModels
                 // if player is killed, spawn player at Home location and restore Hit Points
                 if (CurrentPlayer.HitPoints <=0) 
                 {
+                    RaiseMessage("****");
                     RaiseMessage($"You have been killed by {CurrentMonster.Name}!");
 
                     CurrentLocation = CurrentWorld.LocationAt(0, -1);
