@@ -25,8 +25,6 @@ namespace Engine.Models
         private int _level;
         private int _gold;
 
-
-
         public String Name
         {
             get { return _name; }

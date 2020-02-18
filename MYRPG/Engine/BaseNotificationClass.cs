@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 using System.ComponentModel; // import so we can use  INotifyPropertyChanged interface
 namespace Engine
 {
-    // When ever a function is used by multiple class.
-    // it is a good idea to put it in a base class so everyone can use it.
-    // we will do this to the INotifyPropertyChanged interface.
-    // this function notifies when a property is changed/updated, we use it to tell the xaml a property has been changed, please update it up the view(xaml)
+    /// <summary>
+    /// BaseNotificationClass 
+    /// </summary>
+    /// <remarks>
+    /// Whenever a function is used by multiple classes.
+    /// it is a good idea to put it in a base class so everyone can use it.
+    /// we will do this to the OnPropertyChanged function.
+    /// this function notifies when a property is changed/updated,
+    /// we use it to tell the xaml a property has been changed, please update it up the view(xaml)
+    /// </remarks> 
     public class BaseNotificationClass : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

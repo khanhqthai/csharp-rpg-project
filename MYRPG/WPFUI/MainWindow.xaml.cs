@@ -22,8 +22,17 @@ namespace WPFUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        // readonly - because we only MainWindow to be able to declare it here or inside a constructor.
-        // we can never assign a value to it or accidently override somewhere else.
+        /// <summary>
+        /// Main GameSession object
+        /// </summary>
+        /// <remarks>
+        /// readonly - because we only want MainWindow to be able to declare it here or inside a constructor.
+        ///           It is so we can never assign a value to it or accidently override somewhere else.
+        /// Note: in C# a Class is a reference type.  
+        ///       When an object of the class is created, the variable to which the object is assigned holds only a reference to that memory.
+        ///       This will be usefull because we will be passing _gameSession(which is a reference to our GameSession Object) to MerchantScreen.
+        ///       Where the Player can sell/buy items and those change will then be reflected in the GamesSession Object.
+        /// </remarks>
         private readonly GameSession _gamesSession = new GameSession();
         public MainWindow()
         {
@@ -59,8 +68,13 @@ namespace WPFUI
             _gamesSession.MoveSouth();
         }
 
-        private void OnClick_Shop(object sender, RoutedEventArgs e) 
-        { 
+        // display Merchant Screen
+        private void OnClick_DisplayMerchantScreen(object sender, RoutedEventArgs e) 
+        {
+            MerchantScreen merchantScreen = new MerchantScreen();
+            merchantScreen.Owner = this;
+            merchantScreen.DataContext = _gamesSession;  // pass by references
+            merchantScreen.ShowDialog();
            
         }
         private void OnClick_AttackMonster(object sender, RoutedEventArgs e) 
