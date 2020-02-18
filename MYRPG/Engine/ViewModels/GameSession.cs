@@ -67,6 +67,8 @@ namespace Engine.ViewModels
                     RaiseMessage("****");
                     RaiseMessage($"You have encounter a {CurrentMonster.Name}!" );
                 }
+                // Everytime player moves to a location, set the current merchant for the location
+                CurrentMerchant = CurrentLocation.merchantHere;
             }
         }
         // we are using back property because, we want to use the notification on it
@@ -84,7 +86,16 @@ namespace Engine.ViewModels
             }
         }
 
-
+        public Merchant CurrentMerchant 
+        {
+            get { return _currentMerchant; }
+            set 
+            {
+                _currentMerchant = value;
+                OnPropertyChanged(nameof(CurrentMerchant));
+                OnPropertyChanged(nameof(HasMerchant)); // notify UI to hide/show 'Shop' button      
+            }
+        }
 
         // adds available quests at location to Player, if player does not already have it.
         private void GivePlayerQuestAtLocation()
@@ -202,11 +213,14 @@ namespace Engine.ViewModels
         public bool HasLocationToSouth => 
             CurrentWorld.LocationAt(CurrentLocation.XCordindate, CurrentLocation.YCordindate - 1) != null;
 
-        // returns true, when location has CurrentMonster set
+        // true if CurrentMonster is not null
         public bool HasMonster => CurrentMonster != null;
 
-        
-        
+        // true if CurrentMerchant is not null
+        // we'll use this bool value to hide or show our merchant 'Shop' button
+        public bool HasMerchant => CurrentMerchant != null; 
+
+
         public GameSession()
         {
              
@@ -232,16 +246,11 @@ namespace Engine.ViewModels
             // Add item to player's inventory(starting item)
             CurrentPlayer.Inventory.Add(ItemFactory.CreateItem(0)); // pendant
             CurrentPlayer.AddItemToInventory(ItemFactory.CreateItem(1001)); // wooden stick
-            CurrentPlayer.AddItemToInventory(ItemFactory.CreateItem(1002)); // wooden sword
 
             // Our game has a lot of things to instantiate. For this we introduce factory design pattern.
             // We let the factory handle for creations of objects without exposing logic to the client.
             CurrentWorld = WorldFactory.CreateWorld();
-
-            // set current location
-            CurrentLocation = CurrentWorld.LocationAt(0,-1);
-            
-
+            CurrentLocation = CurrentWorld.LocationAt(0,-1); // set intitial game location
         }
 
         // Define our movement functions below. 

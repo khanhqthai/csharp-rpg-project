@@ -16,12 +16,19 @@ namespace Engine.Factories
 
         static MerchantFactory()
         {
-            Merchant tim = new Merchant("Tim");
+            Merchant tim = new Merchant("Tim 'Last King'");
             tim.AddItemToInventory(ItemFactory.CreateItem(0));
             tim.AddItemToInventory(ItemFactory.CreateItem(1000));
             tim.AddItemToInventory(ItemFactory.CreateItem(1001));
             tim.AddItemToInventory(ItemFactory.CreateItem(1002));
             tim.AddItemToInventory(ItemFactory.CreateItem(1003));
+            Merchant herbalistAdria = new Merchant("Herbalist Adria");
+            herbalistAdria.AddItemToInventory(ItemFactory.CreateItem(0));
+
+
+            AddToMerchantList(tim);
+            AddToMerchantList(herbalistAdria);
+
         }
 
         // return Merchant if found in list _merchants else return null

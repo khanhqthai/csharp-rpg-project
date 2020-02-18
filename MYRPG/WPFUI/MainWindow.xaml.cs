@@ -59,6 +59,10 @@ namespace WPFUI
             _gamesSession.MoveSouth();
         }
 
+        private void OnClick_Shop(object sender, RoutedEventArgs e) 
+        { 
+           
+        }
         private void OnClick_AttackMonster(object sender, RoutedEventArgs e) 
         {
             _gamesSession.AttackCurrentMonster();

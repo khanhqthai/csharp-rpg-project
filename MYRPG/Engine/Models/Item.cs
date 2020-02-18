@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Engine.Models
 {
     /// <summary>
-    /// Base class for game items such as weapons,scrolls,armor
+    /// Class for game item in our game world
     /// </summary>
     public class Item
     {   
@@ -15,7 +15,12 @@ namespace Engine.Models
         public string Name { get; set; }
         public int Price { get; set; }
 
-        // public constructor
+        /// <summary>
+        /// The class constructor.
+        /// </summary>
+        /// <param name="itemTypeID">Item ID.</param>
+        /// <param name="name">name of item.</param>
+        /// <param name="price">item price.</param>
         public Item(int itemTypeID, string name, int price)
         {
             ItemTypeID = itemTypeID;
@@ -23,7 +28,12 @@ namespace Engine.Models
             Price = price;
         }
 
-        // return a copy 
+        /// <summary>
+        /// Copy/clone an item
+        /// </summary>
+        /// <returns> 
+        /// Item object
+        /// </returns>
         public Item Clone() 
         {
             return new Item(ItemTypeID, Name, Price);
