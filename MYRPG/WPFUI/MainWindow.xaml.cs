@@ -67,7 +67,7 @@ namespace WPFUI
         {
             _gamesSession.MoveSouth();
         }
-
+        
         // display Merchant Screen
         private void OnClick_DisplayMerchantScreen(object sender, RoutedEventArgs e) 
         {

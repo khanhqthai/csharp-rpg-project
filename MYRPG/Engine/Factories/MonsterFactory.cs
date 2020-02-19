@@ -63,13 +63,13 @@ namespace Engine.Factories
         }
 
         /* AddLootItem function will randomly add an item to the monster inventory base on percentage
-           itemID is the ID of the item we want to add 
-           percentage, is the chance of the item being add(up to 100%)*/
+           itemID - is the ID of the item we want to add 
+           percentage - is the chance of the item being added(up to 100%)*/
         private static void AddLootItem(Monster monster, int itemID, int percentage) 
         {
             if (RandomNumberGenerator.NumberBetween(1,100) <= percentage) 
             {
-                monster.Inventory.Add(new ItemQuantity(itemID, 1));
+                monster.AddItemToInventory(ItemFactory.CreateItem(itemID));
             }
         }
     }

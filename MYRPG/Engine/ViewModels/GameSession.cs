@@ -238,7 +238,12 @@ namespace Engine.ViewModels
 
             // using Named parameter method to create Player Object
             // because Visual Studio will provide intellisense for the parameters, when using it.
-            CurrentPlayer = new Player { Name = "Lord Khanh", CharacterClass = "Warlord", HitPoints = 10, ExpPoints = 0,
+            CurrentPlayer = new Player { 
+                Name = "Lord Khanh", 
+                CharacterClass = "Warlord", 
+                CurrentHitPoints = 10,
+                MaxHitPoints = 10,
+                ExpPoints = 0,
                 Level = 1,
                 Gold = 10000
             };
@@ -313,28 +318,27 @@ namespace Engine.ViewModels
             }
             else 
             {
-                CurrentMonster.HitPoints -= damageToMonster;
+                CurrentMonster.CurrentHitPoints -= damageToMonster;
                 RaiseMessage("****");
                 RaiseMessage($"Your attack does {damageToMonster} damage to the {CurrentMonster.Name}");
             }
 
             // If monster is killed, collect loot and experience
-            if (CurrentMonster.HitPoints <= 0)
+            if (CurrentMonster.CurrentHitPoints <= 0)
             {
                 RaiseMessage("****");
                 RaiseMessage($"You have slained {CurrentMonster.Name}!");
                 CurrentPlayer.ExpPoints += CurrentMonster.RewardExpPoints; // Get experience
                 RaiseMessage($"You have gained {CurrentMonster.RewardExpPoints} experience points!"); // raise message to display to xaml
 
-                CurrentPlayer.Gold += CurrentMonster.RewardGold; // Get gold
-                RaiseMessage($"You picked up {CurrentMonster.RewardGold} gold!");
+                CurrentPlayer.Gold += CurrentMonster.Gold; // Get gold
+                RaiseMessage($"You picked up {CurrentMonster.Gold} gold!");
 
                 // loot monster's inventory
-                foreach (ItemQuantity itemQuantity in CurrentMonster.Inventory)
+                foreach (Item item in CurrentMonster.Inventory)
                 {
-                    Item item = ItemFactory.CreateItem(itemQuantity.ItemID);
                     CurrentPlayer.AddItemToInventory(item);
-                    RaiseMessage($"You looted {itemQuantity.Quantity} {item.Name} from {CurrentMonster.Name}");
+                    RaiseMessage($"You looted one {item.Name} from {CurrentMonster.Name}");
                 }
 
                 // Spawn another monster to fight
@@ -353,18 +357,18 @@ namespace Engine.ViewModels
                 else 
                 {
                     RaiseMessage("****");
-                    CurrentPlayer.HitPoints -= damageToPlayer;
+                    CurrentPlayer.CurrentHitPoints -= damageToPlayer;
                     RaiseMessage($"{CurrentMonster.Name}'s attack does {damageToPlayer} damage!");
                 }
 
                 // if player is killed, spawn player at Home location and restore Hit Points
-                if (CurrentPlayer.HitPoints <=0) 
+                if (CurrentPlayer.CurrentHitPoints <=0) 
                 {
                     RaiseMessage("****");
                     RaiseMessage($"You have been killed by {CurrentMonster.Name}!");
 
                     CurrentLocation = CurrentWorld.LocationAt(0, -1);
-                    CurrentPlayer.HitPoints = CurrentPlayer.Level * 10;
+                    CurrentPlayer.CurrentHitPoints = CurrentPlayer.Level * 10;
                 }
 
             }

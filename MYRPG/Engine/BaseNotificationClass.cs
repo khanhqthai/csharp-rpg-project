@@ -7,14 +7,17 @@ using System.ComponentModel; // import so we can use  INotifyPropertyChanged int
 namespace Engine
 {
     /// <summary>
-    /// BaseNotificationClass 
+    /// Update class property changes to the view(XAML)
     /// </summary>
     /// <remarks>
     /// Whenever a function is used by multiple classes.
     /// it is a good idea to put it in a base class so everyone can use it.
     /// we will do this to the OnPropertyChanged function.
     /// this function notifies when a property is changed/updated,
-    /// we use it to tell the xaml a property has been changed, please update it up the view(xaml)
+    /// we use it to notify the XAML a property has been changed
+    /// Note: INotifyPropertyChanged is the interface that we will use to update the changes to our View(MainWindow.xaml)
+    /// When we change hitPoints, expPoints..etc.  The changes in are not reflected in our view.  This is where INotifyPropertyChanged comes in
+    /// It will notify the view that these values have changed.
     /// </remarks> 
     public class BaseNotificationClass : INotifyPropertyChanged
     {

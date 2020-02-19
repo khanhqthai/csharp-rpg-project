@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,10 +13,8 @@ namespace Engine.Models
     /// Players can buy or sell item from a merchant
     /// </remarks>
 
-    public class Merchant : BaseNotificationClass
+    public class Merchant : LivingEntity
     {
-        public string Name { get; set; }
-        public ObservableCollection<Item> Inventory { get; set; }
 
         /// <summary>
         /// The class constructor.
@@ -26,25 +23,6 @@ namespace Engine.Models
         public Merchant(string name) 
         {
             Name = name;
-            Inventory = new ObservableCollection<Item>();
-        }
-
-        /// <summary>
-        /// Adds item to merchant inventory.
-        /// </summary>
-        /// <param name="item">item to add.</param>
-        public void AddItemToInventory(Item item) 
-        {
-            Inventory.Add(item);
-        }
-
-        /// <summary>
-        /// Removes item from merchant inventory.
-        /// </summary>
-        /// <param name="item">item to remove.</param>
-        public void RemoveItemFromInventory(Item item) 
-        {
-            Inventory.Remove(item);
         }
 
     }
