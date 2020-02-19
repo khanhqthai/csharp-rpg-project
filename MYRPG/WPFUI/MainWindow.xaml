@@ -162,10 +162,11 @@
         <Grid Grid.Row="2" Grid.Column="0"  Background="LightSlateGray">
             <TabControl>
                 <TabItem Header="Inventory">
-                    <DataGrid ItemsSource="{Binding CurrentPlayer.Inventory}" AutoGenerateColumns="False" HeadersVisibility="Column">
+                    <DataGrid ItemsSource="{Binding CurrentPlayer.GroupedInventory}" AutoGenerateColumns="False" HeadersVisibility="Column">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Description" Binding="{Binding Name}" Width="*"/>
-                            <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="50"/>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Item.Name}" Width="*"/>
+                            <DataGridTextColumn Header="Price" Binding="{Binding Item.Price}" Width="50"/>
+                            <DataGridTextColumn Header="Total" Binding="{Binding Quantity}" Width="50"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>

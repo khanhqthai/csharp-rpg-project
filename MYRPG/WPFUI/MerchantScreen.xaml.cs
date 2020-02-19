@@ -44,39 +44,39 @@ namespace WPFUI
         /// <param name="e"></param>
         private void OnClick_Buy(Object sender, RoutedEventArgs e)
         {
-            Item item = ((FrameworkElement)sender).DataContext as Item; // get item from row clicked
-            if (item != null) 
+            GroupedInventoryItem groupedInventoryItem = ((FrameworkElement)sender).DataContext as GroupedInventoryItem; // get item from row clicked
+            if (groupedInventoryItem != null) 
             {   // check if Player has enough gold
-                if (Session.CurrentPlayer.Gold >= item.Price) 
+                if (Session.CurrentPlayer.Gold >= groupedInventoryItem.Item.Price) 
                 {
                     // subtract gold from player, add item to Player's inventory, remove item from Merchant's inventory
-                    Session.CurrentPlayer.Gold -= item.Price;
-                    Session.CurrentPlayer.AddItemToInventory(item);
-                    Session.CurrentMerchant.RemoveItemFromInventory(item);
-                    
+                    Session.CurrentPlayer.Gold -= groupedInventoryItem.Item.Price;
+                    Session.CurrentPlayer.AddItemToInventory(groupedInventoryItem.Item);
+                    Session.CurrentMerchant.RemoveItemFromInventory(groupedInventoryItem.Item);
+                }
+                else
+                {
+                    MessageBox.Show("You do not have enough Gold to purchase item.");
                 }
             }
         }
         /// <summary>
-        /// Sells item in player's inventory
+        /// Sells item in Player's inventory
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnClick_Sell(Object sender, RoutedEventArgs e)
         {
-            Item item = ((FrameworkElement)sender).DataContext as Item; // get item from row clicked
-            if (item != null)
+            GroupedInventoryItem groupedInventoryItem = ((FrameworkElement)sender).DataContext as GroupedInventoryItem; // get item from row clicked
+            if (groupedInventoryItem != null)
             {
                 // give player gold, remove item from Player's inventory, add item to Merchant's inventory
-                Session.CurrentPlayer.Gold += item.Price;
-                Session.CurrentPlayer.RemoveItemFromInventory(item);
-                Session.CurrentMerchant.AddItemToInventory(item);
+                Session.CurrentPlayer.Gold += groupedInventoryItem.Item.Price;
+                Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryItem.Item);
+                Session.CurrentMerchant.AddItemToInventory(groupedInventoryItem.Item);
 
             }
-            else 
-            {
-                MessageBox.Show("You do not have enough Gold to purchase item.");
-            }
+
         }
     }
 

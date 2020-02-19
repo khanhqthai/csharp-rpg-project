@@ -85,22 +85,65 @@ namespace Engine.Models
         /// </remarks>
         public List<Item> Weapons => Inventory.Where(i => i is Weapon).ToList();
 
+        public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; set; }
+
+
         // protected - because we only want children of the LivingEntity have access to it. 
         protected LivingEntity()
         {
+            // we will need to refactor this in the future, we have 2 inventory, it is duplication
             Inventory = new ObservableCollection<Item>();
+            GroupedInventory = new ObservableCollection<GroupedInventoryItem>();
         }
 
+        /// <summary>
+        /// Adds an item from Inventory and GroupedInventory
+        /// </summary>
+        /// <param name="item"></param>
         public void AddItemToInventory(Item item)
         {
-            Inventory.Add(item);
+            Inventory.Add(item); // add item to main Inventory
+
+            // if item is unique we add new item to GroupInventoryItem, it is always new new Object everytime
+            if (item.IsUnique)
+            {
+                GroupedInventory.Add(new GroupedInventoryItem(item, 1));
+            }
+            else 
+            {
+                // not unique item, we only create a new one once and increment quantity
+                // add item to group inventory if does not exists, set intitial quantity 0
+                if (!GroupedInventory.Any(gi => gi.Item.ItemTypeID == item.ItemTypeID)) 
+                {
+                    GroupedInventory.Add(new GroupedInventoryItem(item,0));
+                }
+
+                // increment quantity 
+                GroupedInventory.First(gi => gi.Item.ItemTypeID == item.ItemTypeID).Quantity++;
+            }
+
             OnPropertyChanged(nameof(Weapons));
         }
 
+        /// <summary>
+        /// Removes an item from Inventory and GroupedInventory
+        /// </summary>
         public void RemoveItemFromInventory(Item item)
         {
             Inventory.Remove(item);
-            // some the items are weapons, we need to notify the changes..since Weapon is not an ObservableCollection
+            GroupedInventoryItem groupedInventoryItemToRemove = GroupedInventory.FirstOrDefault(gi =>gi.Item == item);
+            if (groupedInventoryItemToRemove != null) 
+            {
+                if (groupedInventoryItemToRemove.Quantity == 1)
+                {
+                    GroupedInventory.Remove(groupedInventoryItemToRemove);
+                }
+                else 
+                {
+                    groupedInventoryItemToRemove.Quantity--;
+                }
+            }
+            // some the items are weapons, we need to notify the changes since Weapon is not an ObservableCollection type
             OnPropertyChanged(nameof(Weapons));
         }
     }

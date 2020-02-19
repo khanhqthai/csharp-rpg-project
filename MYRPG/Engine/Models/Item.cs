@@ -14,6 +14,7 @@ namespace Engine.Models
         public int ItemTypeID { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
+        public bool IsUnique { get; set; }
 
         /// <summary>
         /// The class constructor.
@@ -21,11 +22,17 @@ namespace Engine.Models
         /// <param name="itemTypeID">Item ID.</param>
         /// <param name="name">name of item.</param>
         /// <param name="price">item price.</param>
-        public Item(int itemTypeID, string name, int price)
+        /// <param name="isUnique">default is false</param>
+        /// <remarks>
+        /// We want the player to be able to modify their items.  e.i. add gems, add poison to their Weapons.
+        /// Some items we will need them to be unique inorder to do this
+        /// </remarks>
+        public Item(int itemTypeID, string name, int price, bool isUnique = false)
         {
             ItemTypeID = itemTypeID;
             Name = name;
             Price = price;
+            IsUnique = isUnique;
         }
 
         /// <summary>
@@ -36,7 +43,7 @@ namespace Engine.Models
         /// </returns>
         public Item Clone() 
         {
-            return new Item(ItemTypeID, Name, Price);
+            return new Item(ItemTypeID, Name, Price, IsUnique);
         }
     }
 }

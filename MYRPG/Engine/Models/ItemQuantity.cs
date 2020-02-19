@@ -11,8 +11,8 @@ namespace Engine.Models
     /// Use to manage game Item quantity in Player's inventory and Quest requirements
     /// </summary>
     /// <remarks>
-    /// The quest.cs class needs a way to track and manage amount of items
-    /// some quests require x amount of item, or x amount of kills to complete a quests
+    /// The Quest class needs a way to track and manage amount of items
+    /// some quests require X amount of item, or X amount of kills to complete a quests
     /// this class will help with that.
     /// Or if we need to reward a player with 2 potion
     /// This class can help with that.

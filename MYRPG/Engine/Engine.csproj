@@ -50,6 +50,7 @@
     <Compile Include="Factories\MonsterFactory.cs" />
     <Compile Include="Factories\QuestFactory.cs" />
     <Compile Include="Factories\WorldFactory.cs" />
+    <Compile Include="Models\GroupedInventoryItem.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemQuantity.cs" />
     <Compile Include="Models\LivingEntity.cs" />
