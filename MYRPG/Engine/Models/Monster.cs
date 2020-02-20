@@ -29,9 +29,8 @@ namespace Engine.Models
 
 
         // Monster constructor
-        public Monster(string name, string imageName, int maxHitPoints, int hitPoints, int minDamage, int maxDamage,
-            int rewardExpPoints, int rewardGold) : base(name, 
-                maxHitPoints, maxHitPoints, rewardGold)
+        public Monster(string name, int level,  int maxHitPoints, int minDamage, int maxDamage,
+            int rewardExpPoints, int rewardGold, string imageName) : base(name, maxHitPoints, maxHitPoints, rewardGold, level)
         {
             ImageName = $"pack://application:,,,/Engine;component/Images/Monsters/{imageName}";
             MinDamage = minDamage;

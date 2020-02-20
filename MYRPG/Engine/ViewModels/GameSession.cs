@@ -34,14 +34,15 @@ namespace Engine.ViewModels
                 {
                     // unsubscribe from previous CurrentPlayer
                     _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
+                    _currentPlayer.OnLeveledUp -= OnCurrentPlayerLeveledUp;
                 }
                 
                 // set new current player value, then subcribe to it
                 _currentPlayer = value;
-                
                 if (_currentPlayer!=null) 
                 {
                     _currentPlayer.OnKilled += OnCurrentPlayerKilled;
+                    _currentPlayer.OnLeveledUp += OnCurrentPlayerLeveledUp;
                 }
             }
         }
@@ -166,10 +167,8 @@ namespace Engine.ViewModels
 
             // using Named parameter method to create Player Object
             // because Visual Studio will provide intellisense for the parameters, when using it.
-            CurrentPlayer = new Player("Lord Khanh", 10,10,10000 ) { 
+            CurrentPlayer = new Player("Lord Khanh",0,0,10,10,10000 ) { 
                 CharacterClass = "Warlord", 
-                ExpPoints = 0,
-                Level = 1,
             };
 
             // Add item to player's inventory(starting item)
@@ -316,7 +315,7 @@ namespace Engine.ViewModels
         {
             RaiseMessage("");
             RaiseMessage($"You have slained {CurrentMonster.Name}!");
-            CurrentPlayer.ExpPoints += CurrentMonster.RewardExpPoints; //  give experience
+            CurrentPlayer.AddExpPoints(CurrentMonster.RewardExpPoints); //  give experience
             RaiseMessage($"You have gained {CurrentMonster.RewardExpPoints} experience points!"); // raise message to display to xaml
 
             CurrentPlayer.ReceiveGold(CurrentMonster.Gold); // give gold
@@ -400,19 +399,19 @@ namespace Engine.ViewModels
                         RaiseMessage($"You completed the '{quest.Name}' quest!");
 
                         // give player the rewards for completing the quest
-                        CurrentPlayer.ExpPoints += quest.RewardExpPoints;
                         RaiseMessage($"You gained {quest.RewardExpPoints} experience points!");
+                        CurrentPlayer.AddExpPoints(quest.RewardExpPoints);
 
-                        CurrentPlayer.ReceiveGold(quest.RewardGold);
                         RaiseMessage($"You recieved {quest.RewardGold} gold!");
-
+                        CurrentPlayer.ReceiveGold(quest.RewardGold);
+;
                         foreach (ItemQuantity itemQuantity in quest.RewardItems)
                         {
                             for (int i = 0; i < itemQuantity.Quantity; i++)
                             {
                                 Item rewardItem = ItemFactory.CreateItem(itemQuantity.ItemID);
-                                CurrentPlayer.AddItemToInventory(rewardItem);
                                 RaiseMessage($"You recieved a {rewardItem.Name}!");
+                                CurrentPlayer.AddItemToInventory(rewardItem);
                             }
 
                         }
@@ -428,5 +427,10 @@ namespace Engine.ViewModels
             }
         }
 
+        private void OnCurrentPlayerLeveledUp(object sender, System.EventArgs e) 
+        {
+            RaiseMessage("");
+            RaiseMessage($"Congratulations! You are now level {CurrentPlayer.Level}".ToUpper());
+        }
     }
 }

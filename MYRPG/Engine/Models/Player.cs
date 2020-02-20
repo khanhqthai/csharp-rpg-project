@@ -16,7 +16,6 @@ namespace Engine.Models
 
         private String _characterClass;
         private int _expPoints;
-        private int _level;
 
         public String CharacterClass
         {
@@ -31,33 +30,65 @@ namespace Engine.Models
         public int ExpPoints
         {
             get { return _expPoints; }
-            set
+            private set // private - only allow player to set experience points.
             {
                 _expPoints = value;
                 OnPropertyChanged(nameof(ExpPoints));
+                SetLevelAndMaxHitPoints(); // check if level up requirement are met every time, players gains experience points
             }
         }
-        public int Level
-        {
-            get { return _level; }
-            set
-            {
-                _level = value;
-                OnPropertyChanged(nameof(Level));
-            }
-        }
+
+        public event EventHandler OnLeveledUp; 
 
         public ObservableCollection<QuestStatus> Quests { get; set; }
 
 
-        public Player(string name, int currentHitPoints, int maxHitPoints, int gold) : base(name, currentHitPoints, maxHitPoints, gold)
+
+        public Player(string name, int exPoints, int currentHitPoints, int maxHitPoints, int gold, int level)
+            : base(name, currentHitPoints, maxHitPoints, gold, level)
         {
+            ExpPoints = exPoints;
             Quests = new ObservableCollection<QuestStatus>();
         }
 
+        protected virtual void RaiseOnLeveledUp()
+        {
+            // if not null, notify subscribers of OnLeveledUp
+            OnLeveledUp?.Invoke(this, new System.EventArgs());
+        }
+
+        public void AddExpPoints(int expPoints) 
+        {
+            ExpPoints += expPoints;
+        }
+
+        /// <summary>
+        /// Sets new level, max hit points
+        /// </summary>
+        /// <remarks>
+        /// This function will called everytime the ExpPoints property is set/update.
+        /// Checks if the player ExpPoints is high enough to reward a new level.
+        /// Our formula for leveling up is (Expoints/100) + 1...so every 100 experience points
+        /// level 1 = 100 exp, level 2 = 200 exp  
+        /// We essentially check if the new , level 3 = 300 exp and so on
+        /// </remarks>
+        private void SetLevelAndMaxHitPoints()
+        {
+            int originalLevel = Level;
+            Level = (ExpPoints / 100) + 1;
+            if (Level != originalLevel) 
+            {
+                // set new max hits points for leveling up, and full heal 
+                MaxHitPoints = Level * 10;
+                FullHeal();
+
+                // raise event to let subscribers know that player has leveled up.
+                // maybe have the xaml can do some sort of flashy graphics congratulating the player.
+                RaiseOnLeveledUp(); 
+            }
+        }
 
 
-        
         public bool HasAllTheseItems(List<ItemQuantity> items) 
         {
             // We pass in List<ItemQuantity> - which is the items and quantity needed

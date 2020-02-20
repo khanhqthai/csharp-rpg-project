@@ -16,6 +16,8 @@ namespace Engine.Models
     public abstract class LivingEntity : BaseNotificationClass
     {
         private string _name;
+        private int _level;
+        
         private int _currentHitPoints;
         private int _maxHitPoints;
         private int _gold;
@@ -37,16 +39,16 @@ namespace Engine.Models
             private set
             {
                 _currentHitPoints = value;
-                OnPropertyChanged(nameof(_currentHitPoints));
+                OnPropertyChanged(nameof(CurrentHitPoints));
             }
         }
-        public int MaxHitPoints 
+        public int MaxHitPoints
         {
-           get { return _maxHitPoints;  }
-            private set 
+            get { return _maxHitPoints; }
+            protected set
             {
                 _maxHitPoints = value;
-                OnPropertyChanged(nameof(_maxHitPoints));
+                OnPropertyChanged(nameof(MaxHitPoints));
             }
         }
         public int Gold
@@ -58,6 +60,17 @@ namespace Engine.Models
                 OnPropertyChanged(nameof(Gold));
             }
         }
+
+        public int Level 
+        {
+            get { return _level; }
+            protected set // only base class(LivingEntity) and child class(Merchant,Monster,Player) can set
+            {
+                _level = value;
+                OnPropertyChanged(nameof(Level));
+            }
+        }
+
 
         /// <summary>
         /// List container to hold game items
@@ -100,9 +113,10 @@ namespace Engine.Models
         /// <remarks>
         /// protected - because we only want children of the LivingEntity have access to it. 
         /// </remarks>
-        protected LivingEntity(string name, int currentHitPoints, int maxHitPoints, int gold)
+        protected LivingEntity(string name, int currentHitPoints, int maxHitPoints, int gold, int level = 1)
         {
             Name = name;
+            Level = level;
             CurrentHitPoints = currentHitPoints;
             MaxHitPoints = maxHitPoints;
             Gold = gold;

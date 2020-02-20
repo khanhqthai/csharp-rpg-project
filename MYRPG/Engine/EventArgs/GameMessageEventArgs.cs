@@ -10,7 +10,7 @@ namespace Engine.EventArgs
     /// GameMessageEventArgs class - create game message events
     /// GameMessageEventArgs - inherits from System.EventArgs(stanard system events args used with raising a message)
     ///                        we will use it to make our  custom GameMessageEventArgs class
-    ///  Getter - public because we Message value to be read from any part of our program.  In our case GameSession.cs
+    ///  Getter - public because we want Message value to be read from any part of our program.  In our case GameSession.cs
     ///  Setter - private because we only want our class to be able to set it.  
     /// </summary>
     public class GameMessageEventArgs : System.EventArgs
