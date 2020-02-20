@@ -37,7 +37,7 @@ namespace WPFUI
         public MainWindow()
         {
             InitializeComponent();
-
+            Console.WriteLine(_gamesSession.GameIconImageSprite);
             // When our UI(xaml) is constructed/rendered
             // we add the function OnGameMessagedRaised() to _gamesSession.OnMessagedRaised
             // so _gamesSession.OnMessagedRaised has a pointer/reference to OnGameMessagedRaised() function.

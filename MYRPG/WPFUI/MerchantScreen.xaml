@@ -20,7 +20,8 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding CurrentMerchant.Name}" HorizontalAlignment="Center" />
+        <Label Grid.Row="0" Grid.Column="0"  Content="{Binding CurrentMerchant.ImageName}" HorizontalAlignment="Center" />
+        <Label Grid.Row="0" Grid.Column="1"  Content="{Binding CurrentMerchant.Name}" HorizontalAlignment="Center" />
         <Label Grid.Row="1" Grid.Column="0" Content="Your Inventory" HorizontalAlignment="Center"/>
         <Label Grid.Row="1" Grid.Column="1" Content="Shop Inventory" HorizontalAlignment="Center"/>
         <!--Player Inventory-->

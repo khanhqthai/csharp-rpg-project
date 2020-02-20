@@ -23,7 +23,7 @@ namespace Engine.ViewModels
         private Merchant _currentMerchant;
         private Player _currentPlayer;
 
-
+        public string GameIconImageSprite { get; set; }
         public Player CurrentPlayer
         {
             get { return _currentPlayer; }
@@ -161,18 +161,8 @@ namespace Engine.ViewModels
 
         public GameSession()
         {
-             
-            /* 
-             * Old way of creating Player object
-                CurrentPlayer = new Player();
-                CurrentPlayer.Name = "Lord Khanh";
-                CurrentPlayer.CharacterClass = "Warlord";
-                CurrentPlayer.HitPoints = 10;
-                CurrentPlayer.ExpPoints = 0;
-                CurrentPlayer.Level = 1;
-                CurrentPlayer.Gold = 10000;
-             * We will replace this with named parameter method, see below
-            */
+             // load game icons sprite
+             GameIconImageSprite = "pack://application:,,,/Engine;component/Images/game-item-icons.png";
 
             // using Named parameter method to create Player Object
             // because Visual Studio will provide intellisense for the parameters, when using it.
@@ -291,6 +281,7 @@ namespace Engine.ViewModels
                     RaiseMessage("****");
                     RaiseMessage($"{CurrentMonster.Name}'s attack does {damageToPlayer} damage!");
                     CurrentPlayer.TakeDamage(damageToPlayer);
+
                     RaiseMessage("****");
                     RaiseMessage("");
                 }
