@@ -21,8 +21,33 @@ namespace Engine.ViewModels
         private Location _currentLocation;
         private Monster _currentMonster;
         private Merchant _currentMerchant;
+        private Player _currentPlayer;
 
-        public Player CurrentPlayer { get; set; } 
+
+        public Player CurrentPlayer
+        {
+            get { return _currentPlayer; }
+
+            set
+            {
+                if (_currentPlayer != null) 
+                {
+                    // unsubscribe from previous CurrentPlayer
+                    _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
+                }
+                
+                // set new current player value, then subcribe to it
+                _currentPlayer = value;
+                
+                if (_currentPlayer!=null) 
+                {
+                    _currentPlayer.OnKilled += OnCurrentPlayerKilled;
+                }
+            }
+        }
+
+
+
         public World CurrentWorld { get; set; }
         public Weapon CurrentWeapon { get; set; }
 
@@ -78,13 +103,22 @@ namespace Engine.ViewModels
             get { return _currentMonster; }
             set 
             {
+                if (_currentMonster !=null ) 
+                {
+                    _currentMonster.OnKilled -= OnCurrentMonsterKilled;
+                }
+
                 _currentMonster = value;
-                
+                if (_currentMonster != null) 
+                {
+                    _currentMonster.OnKilled += OnCurrentMonsterKilled;
+                }
                 // Notify UI, CurrentMonster, HasMonster value has changed
                 OnPropertyChanged(nameof(CurrentMonster));
                 OnPropertyChanged(nameof(HasMonster));
             }
         }
+
 
         public Merchant CurrentMerchant 
         {
@@ -98,103 +132,7 @@ namespace Engine.ViewModels
         }
 
         // adds available quests at location to Player, if player does not already have it.
-        private void GivePlayerQuestAtLocation()
-        {
-            // We check the List of QuestAvailableHere at the location against the Player's List of Quests
-            // We add any quest from the QuestAvailable list that is not already in the Player's List of Quests
-            foreach (Quest quest in CurrentLocation.QuestAvailableHere)
-            {
-                if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.ID == quest.ID))
-                {
-                    CurrentPlayer.Quests.Add(new QuestStatus(quest));
-                    RaiseMessage("****");
-                    RaiseMessage($"You recieve the '{quest.Name}' quest!");
-                    RaiseMessage($" {quest.Description}");
-
-                    RaiseMessage("This quest requires: ");
-                    foreach (ItemQuantity itemQuantity in quest.RequiredQuestItems)
-                    {
-                        RaiseMessage($" {itemQuantity.Quantity} {ItemFactory.CreateItem(itemQuantity.ItemID).Name}");
-                    }
-                    RaiseMessage(" to complete. ");
-                    RaiseMessage("Your reward will be: ");
-                    RaiseMessage($" {quest.RewardExpPoints} experience points.");
-                    RaiseMessage($" {quest.RewardGold} gold.");
-                    foreach (ItemQuantity itemQuantity in quest.RewardItems)
-                    {
-                        RaiseMessage($" {itemQuantity.Quantity} {ItemFactory.CreateItem(itemQuantity.ItemID).Name}");
-                    }
-
-                }
-            }
-        }
-
-        // get monster at location
-        private void GetMonsterAtLocation() 
-        {
-            CurrentMonster = CurrentLocation.GetMonster();
-        }
-        /// <summary>
-        /// 1. Check if player meets quest requirement items, if so give player the quest's reward
-        /// 2. Removes  quest requirement items from player's inventory. 
-        /// </summary>
-        private void QuestCompleteAtLocation() 
-        {
-             
-            // loop through each quest at location
-            foreach (Quest quest in CurrentLocation.QuestAvailableHere) 
-            {
-                // Check for  incompleted quests
-                QuestStatus questToComplete = 
-                    CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.ID == quest.ID && !q.IsCompleted);
-                
-                if (questToComplete != null) 
-                {
-             
-                    if (CurrentPlayer.HasAllTheseItems(quest.RequiredQuestItems))
-                    {
-                        // remove the required quest items from player's inventory
-                        foreach (ItemQuantity itemQuantity in quest.RequiredQuestItems) 
-                        {
-                            // we'll need to loop the total amount and remove it.
-                            for (int i = 0; i < itemQuantity.Quantity; i++)
-                            {
-                                CurrentPlayer.RemoveItemFromInventory(CurrentPlayer.Inventory.First(item => item.ItemTypeID == itemQuantity.ItemID));
-                            }
-                          
-                        }
-                        RaiseMessage("****");
-                        RaiseMessage($"You completed the '{quest.Name}' quest!");
-
-                        // give player the rewards for completing the quest
-                        CurrentPlayer.ExpPoints += quest.RewardExpPoints;
-                        RaiseMessage($"You gained {quest.RewardExpPoints} experience points!");
-
-                        CurrentPlayer.Gold += quest.RewardGold;
-                        RaiseMessage($"You recieved {quest.RewardGold} gold!");
-
-                        foreach (ItemQuantity itemQuantity in quest.RewardItems)
-                        {
-                            for (int i = 0; i< itemQuantity.Quantity; i++ ) 
-                            {
-                                Item rewardItem = ItemFactory.CreateItem(itemQuantity.ItemID);
-                                CurrentPlayer.AddItemToInventory(rewardItem);
-                                RaiseMessage($"You recieved a {rewardItem.Name}!");
-                            }
-                            
-                        }
-
-                        // Mark the Quest completed
-                        questToComplete.IsCompleted = true;
-                    }
-
-
-                }
-
-
-            }
-        }
-
+    
         // Before the player moves North/South/East/West, we want to check if the location exists in our Location List.
         // We will have 4 boolean that tests each direction. 
         // Our View(MainWindow.xaml) will make use of these boolean.
@@ -238,14 +176,10 @@ namespace Engine.ViewModels
 
             // using Named parameter method to create Player Object
             // because Visual Studio will provide intellisense for the parameters, when using it.
-            CurrentPlayer = new Player { 
-                Name = "Lord Khanh", 
+            CurrentPlayer = new Player("Lord Khanh", 10,10,10000 ) { 
                 CharacterClass = "Warlord", 
-                CurrentHitPoints = 10,
-                MaxHitPoints = 10,
                 ExpPoints = 0,
                 Level = 1,
-                Gold = 10000
             };
 
             // Add item to player's inventory(starting item)
@@ -301,8 +235,11 @@ namespace Engine.ViewModels
             // In this case, we need CurrentWeapon to be set.
             if (CurrentWeapon == null) 
             {
-                RaiseMessage("*****");
+                RaiseMessage("");
+                RaiseMessage("****");
                 RaiseMessage("Select a weapon to attack with.");
+                RaiseMessage("****");
+                RaiseMessage("");
                 // exit our function
                 return;
             }
@@ -312,36 +249,27 @@ namespace Engine.ViewModels
 
             if (damageToMonster == 0)
             {
-                RaiseMessage("*****");
+                RaiseMessage("");
+                RaiseMessage("****");
                 RaiseMessage($"Your attack missed the {CurrentMonster.Name}.");
-                
+                RaiseMessage("****");
+                RaiseMessage("");
             }
             else 
             {
-                CurrentMonster.CurrentHitPoints -= damageToMonster;
+                
+                RaiseMessage("");
                 RaiseMessage("****");
                 RaiseMessage($"Your attack does {damageToMonster} damage to the {CurrentMonster.Name}");
+                RaiseMessage("****");
+                RaiseMessage("");
+                CurrentMonster.TakeDamage(damageToMonster);
             }
 
-            // If monster is killed, collect loot and experience
-            if (CurrentMonster.CurrentHitPoints <= 0)
+            // If monster is killed 
+            if (CurrentMonster.IsDead)
             {
-                RaiseMessage("****");
-                RaiseMessage($"You have slained {CurrentMonster.Name}!");
-                CurrentPlayer.ExpPoints += CurrentMonster.RewardExpPoints; // Get experience
-                RaiseMessage($"You have gained {CurrentMonster.RewardExpPoints} experience points!"); // raise message to display to xaml
-
-                CurrentPlayer.Gold += CurrentMonster.Gold; // Get gold
-                RaiseMessage($"You picked up {CurrentMonster.Gold} gold!");
-
-                // loot monster's inventory
-                foreach (Item item in CurrentMonster.Inventory)
-                {
-                    CurrentPlayer.AddItemToInventory(item);
-                    RaiseMessage($"You looted one {item.Name} from {CurrentMonster.Name}");
-                }
-
-                // Spawn another monster to fight
+                // get another monster to fight
                 GetMonsterAtLocation();
             }
             else
@@ -351,25 +279,22 @@ namespace Engine.ViewModels
 
                 if (damageToPlayer == 0)
                 {
+                    RaiseMessage("");
                     RaiseMessage("****");
                     RaiseMessage($"{CurrentMonster.Name}'s attack miss");
+                    RaiseMessage("****");
+                    RaiseMessage("");
                 }
                 else 
                 {
+                    RaiseMessage("");
                     RaiseMessage("****");
-                    CurrentPlayer.CurrentHitPoints -= damageToPlayer;
                     RaiseMessage($"{CurrentMonster.Name}'s attack does {damageToPlayer} damage!");
-                }
-
-                // if player is killed, spawn player at Home location and restore Hit Points
-                if (CurrentPlayer.CurrentHitPoints <=0) 
-                {
+                    CurrentPlayer.TakeDamage(damageToPlayer);
                     RaiseMessage("****");
-                    RaiseMessage($"You have been killed by {CurrentMonster.Name}!");
-
-                    CurrentLocation = CurrentWorld.LocationAt(0, -1);
-                    CurrentPlayer.CurrentHitPoints = CurrentPlayer.Level * 10;
+                    RaiseMessage("");
                 }
+
 
             }
 
@@ -383,5 +308,134 @@ namespace Engine.ViewModels
             // but any funciton can be subscribed(added to) to event OnMessagedRaised 
             OnMessagedRaised?.Invoke(this, new GameMessageEventArgs(messsage));
         }
+        private void OnCurrentPlayerKilled(object sender, System.EventArgs e)
+        {
+            RaiseMessage("");
+            RaiseMessage("****");
+            RaiseMessage($"You have been killed by {CurrentMonster.Name}!");
+            RaiseMessage("****");
+            RaiseMessage("");
+
+            CurrentLocation = CurrentWorld.LocationAt(0, -1);
+            CurrentPlayer.FullHeal();
+        }
+
+        // give experience, gold, and item to Player 
+        private void OnCurrentMonsterKilled(object sender, System.EventArgs e)
+        {
+            RaiseMessage("");
+            RaiseMessage($"You have slained {CurrentMonster.Name}!");
+            CurrentPlayer.ExpPoints += CurrentMonster.RewardExpPoints; //  give experience
+            RaiseMessage($"You have gained {CurrentMonster.RewardExpPoints} experience points!"); // raise message to display to xaml
+
+            CurrentPlayer.ReceiveGold(CurrentMonster.Gold); // give gold
+            RaiseMessage($"You picked up {CurrentMonster.Gold} gold!");
+
+            // loot monster's inventory
+            foreach (Item item in CurrentMonster.Inventory)
+            {
+                CurrentPlayer.AddItemToInventory(item);
+                RaiseMessage($"You looted one {item.Name} from {CurrentMonster.Name}");
+            }
+
+
+        }
+        private void GivePlayerQuestAtLocation()
+        {
+            // We check the List of QuestAvailableHere at the location against the Player's List of Quests
+            // We add any quest from the QuestAvailable list that is not already in the Player's List of Quests
+            foreach (Quest quest in CurrentLocation.QuestAvailableHere)
+            {
+                if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.ID == quest.ID))
+                {
+                    CurrentPlayer.Quests.Add(new QuestStatus(quest));
+                    RaiseMessage("****");
+                    RaiseMessage($"You recieve the '{quest.Name}' quest!");
+                    RaiseMessage($" {quest.Description}");
+
+                    RaiseMessage("This quest requires: ");
+                    foreach (ItemQuantity itemQuantity in quest.RequiredQuestItems)
+                    {
+                        RaiseMessage($" {itemQuantity.Quantity} {ItemFactory.CreateItem(itemQuantity.ItemID).Name}");
+                    }
+                    RaiseMessage(" to complete. ");
+                    RaiseMessage("Your reward will be: ");
+                    RaiseMessage($" {quest.RewardExpPoints} experience points.");
+                    RaiseMessage($" {quest.RewardGold} gold.");
+                    foreach (ItemQuantity itemQuantity in quest.RewardItems)
+                    {
+                        RaiseMessage($" {itemQuantity.Quantity} {ItemFactory.CreateItem(itemQuantity.ItemID).Name}");
+                    }
+
+                }
+            }
+        }
+
+        // get monster at location
+        private void GetMonsterAtLocation()
+        {
+            CurrentMonster = CurrentLocation.GetMonster();
+        }
+        /// <summary>
+        /// 1. Check if player meets quest requirement items, if so give player the quest's reward
+        /// 2. Removes  quest requirement items from player's inventory. 
+        /// </summary>
+        private void QuestCompleteAtLocation()
+        {
+
+            // loop through each quest at location
+            foreach (Quest quest in CurrentLocation.QuestAvailableHere)
+            {
+                // Check for  incompleted quests
+                QuestStatus questToComplete =
+                    CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.ID == quest.ID && !q.IsCompleted);
+
+                if (questToComplete != null)
+                {
+
+                    if (CurrentPlayer.HasAllTheseItems(quest.RequiredQuestItems))
+                    {
+                        // remove the required quest items from player's inventory
+                        foreach (ItemQuantity itemQuantity in quest.RequiredQuestItems)
+                        {
+                            // we'll need to loop the total amount and remove it.
+                            for (int i = 0; i < itemQuantity.Quantity; i++)
+                            {
+                                CurrentPlayer.RemoveItemFromInventory(CurrentPlayer.Inventory.First(item => item.ItemTypeID == itemQuantity.ItemID));
+                            }
+
+                        }
+                        RaiseMessage("****");
+                        RaiseMessage($"You completed the '{quest.Name}' quest!");
+
+                        // give player the rewards for completing the quest
+                        CurrentPlayer.ExpPoints += quest.RewardExpPoints;
+                        RaiseMessage($"You gained {quest.RewardExpPoints} experience points!");
+
+                        CurrentPlayer.ReceiveGold(quest.RewardGold);
+                        RaiseMessage($"You recieved {quest.RewardGold} gold!");
+
+                        foreach (ItemQuantity itemQuantity in quest.RewardItems)
+                        {
+                            for (int i = 0; i < itemQuantity.Quantity; i++)
+                            {
+                                Item rewardItem = ItemFactory.CreateItem(itemQuantity.ItemID);
+                                CurrentPlayer.AddItemToInventory(rewardItem);
+                                RaiseMessage($"You recieved a {rewardItem.Name}!");
+                            }
+
+                        }
+
+                        // Mark the Quest completed
+                        questToComplete.IsCompleted = true;
+                    }
+
+
+                }
+
+
+            }
+        }
+
     }
 }

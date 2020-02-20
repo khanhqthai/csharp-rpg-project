@@ -20,9 +20,8 @@ namespace Engine.Models
         /// The class constructor.
         /// </summary>
         /// <param name="name">Name of merchant.</param>
-        public Merchant(string name) 
+        public Merchant(string name) : base(name, 999,999,999)
         {
-            Name = name;
         }
 
     }

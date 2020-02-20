@@ -24,22 +24,19 @@ namespace Engine.Models
 
         public int MinDamage { get; set; }
         public int MaxDamage { get; set; }
+        public string ImageName { get; set; }
         public int RewardExpPoints { get; private set; }
 
 
         // Monster constructor
         public Monster(string name, string imageName, int maxHitPoints, int hitPoints, int minDamage, int maxDamage,
-            int rewardExpPoints, int rewardGold) 
+            int rewardExpPoints, int rewardGold) : base(name, 
+                maxHitPoints, maxHitPoints, rewardGold)
         {
-            Name = name;
             ImageName = $"pack://application:,,,/Engine;component/Images/Monsters/{imageName}";
-            MaxHitPoints = maxHitPoints;
-            CurrentHitPoints = hitPoints;
             MinDamage = minDamage;
             MaxDamage = maxDamage;
             RewardExpPoints = rewardExpPoints;
-            Gold = rewardGold;
-
         }
     }
 }

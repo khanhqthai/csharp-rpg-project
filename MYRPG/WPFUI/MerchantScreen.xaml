@@ -45,7 +45,7 @@
                   VerticalScrollBarVisibility="Auto" HeadersVisibility="Column" AutoGenerateColumns="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Description" IsReadOnly="True" Width="*" Binding="{Binding Path=Item.Name}"/>
-                <DataGridTextColumn Header="Price" IsReadOnly="True" Width="Auto" Binding="{Binding Path=item.Price}"/>
+                <DataGridTextColumn Header="Price" IsReadOnly="True" Width="Auto" Binding="{Binding Path=Item.Price}"/>
                 <DataGridTextColumn Header="Available" IsReadOnly="True" Width="Auto" Binding="{Binding Path=Quantity}"/>
                 <DataGridTemplateColumn MinWidth="75">
                     <DataGridTemplateColumn.CellTemplate>

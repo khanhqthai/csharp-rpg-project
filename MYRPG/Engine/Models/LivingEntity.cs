@@ -19,11 +19,10 @@ namespace Engine.Models
         private int _currentHitPoints;
         private int _maxHitPoints;
         private int _gold;
-        public string ImageName { get; set; }
         public string Name
         {
             get { return _name; }
-            set
+            private set
             {
                 // everytime  we set/update our value for name
                 // we call OnPropertyChanged to notify anything using the property that it has been changed
@@ -35,7 +34,7 @@ namespace Engine.Models
         public int CurrentHitPoints
         {
             get { return _currentHitPoints; }
-            set
+            private set
             {
                 _currentHitPoints = value;
                 OnPropertyChanged(nameof(_currentHitPoints));
@@ -44,7 +43,7 @@ namespace Engine.Models
         public int MaxHitPoints 
         {
            get { return _maxHitPoints;  }
-            set 
+            private set 
             {
                 _maxHitPoints = value;
                 OnPropertyChanged(nameof(_maxHitPoints));
@@ -53,7 +52,7 @@ namespace Engine.Models
         public int Gold
         {
             get { return _gold; }
-            set
+            private set
             {
                 _gold = value;
                 OnPropertyChanged(nameof(Gold));
@@ -87,14 +86,87 @@ namespace Engine.Models
 
         public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; set; }
 
+        public bool IsDead => CurrentHitPoints <= 0;
 
-        // protected - because we only want children of the LivingEntity have access to it. 
-        protected LivingEntity()
+        public event EventHandler OnKilled;
+
+        /// <summary>
+        /// The LivingEntity constructor
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="currentHitPoints">Current Hit Points</param>
+        /// <param name="maxHitPoints">Max Hit Points</param>
+        /// <param name="gold">Player's Gold</param>
+        /// <remarks>
+        /// protected - because we only want children of the LivingEntity have access to it. 
+        /// </remarks>
+        protected LivingEntity(string name, int currentHitPoints, int maxHitPoints, int gold)
         {
+            Name = name;
+            CurrentHitPoints = currentHitPoints;
+            MaxHitPoints = maxHitPoints;
+            Gold = gold;
+
             // we will need to refactor this in the future, we have 2 inventory, it is duplication
             Inventory = new ObservableCollection<Item>();
             GroupedInventory = new ObservableCollection<GroupedInventoryItem>();
         }
+
+        public void TakeDamage(int hitPointsOfDamage) 
+        {
+            CurrentHitPoints -= hitPointsOfDamage;
+            if (IsDead) 
+            {
+                CurrentHitPoints = 0;
+                RaiseOnKilledEvent();
+            }
+        }
+
+        public void Heal(int hitPointsToHeal) 
+        {
+            CurrentHitPoints += hitPointsToHeal;
+            // players can't be healed more than their max hit points.
+            if (CurrentHitPoints > MaxHitPoints) 
+            {
+                CurrentHitPoints = hitPointsToHeal;
+            }
+        }
+        /// <summary>
+        /// Set CurrentHitPoints to MaxHitPoints
+        /// </summary>
+        /// <remarks>
+        /// restores full hit points
+        /// </remarks>
+        public void FullHeal() 
+        {
+            CurrentHitPoints = MaxHitPoints;
+        }
+
+        public void ReceiveGold(int amountOfGold) 
+        {
+            Gold += amountOfGold;
+        }
+
+        public void SpendGold(int amountOfGold) 
+        {
+            if (amountOfGold > Gold) 
+            {
+                throw new ArgumentOutOfRangeException($"{Name} only has {Gold} gold. Does not have enough to spend {amountOfGold} gold.");
+            }
+            Gold -= amountOfGold;        
+        }
+
+
+        /// <summary>
+        /// raise event if living entity is killed
+        /// </summary>
+        private void RaiseOnKilledEvent()
+        {
+            // if not null invoke event to notify subscribers
+            OnKilled?.Invoke(this, new System.EventArgs());
+        }
+
+
 
         /// <summary>
         /// Adds an item from Inventory and GroupedInventory

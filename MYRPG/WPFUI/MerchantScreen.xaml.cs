@@ -50,7 +50,7 @@ namespace WPFUI
                 if (Session.CurrentPlayer.Gold >= groupedInventoryItem.Item.Price) 
                 {
                     // subtract gold from player, add item to Player's inventory, remove item from Merchant's inventory
-                    Session.CurrentPlayer.Gold -= groupedInventoryItem.Item.Price;
+                    Session.CurrentPlayer.SpendGold(groupedInventoryItem.Item.Price);
                     Session.CurrentPlayer.AddItemToInventory(groupedInventoryItem.Item);
                     Session.CurrentMerchant.RemoveItemFromInventory(groupedInventoryItem.Item);
                 }
@@ -71,7 +71,7 @@ namespace WPFUI
             if (groupedInventoryItem != null)
             {
                 // give player gold, remove item from Player's inventory, add item to Merchant's inventory
-                Session.CurrentPlayer.Gold += groupedInventoryItem.Item.Price;
+                Session.CurrentPlayer.ReceiveGold(groupedInventoryItem.Item.Price);
                 Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryItem.Item);
                 Session.CurrentMerchant.AddItemToInventory(groupedInventoryItem.Item);
 
