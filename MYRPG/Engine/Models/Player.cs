@@ -40,7 +40,7 @@ namespace Engine.Models
 
         public event EventHandler OnLeveledUp; 
 
-        public ObservableCollection<QuestStatus> Quests { get; set; }
+        public ObservableCollection<QuestStatus> Quests { get; }
 
 
 

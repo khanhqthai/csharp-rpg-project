@@ -13,7 +13,7 @@ namespace Engine.Models
     /// </summary>
     public class MonsterEncounter
     {
-        public int MonsterID { get; set; }
+        public int MonsterID { get; }
         public int ChanceOfEncountering { get; set; }
 
         public MonsterEncounter(int monsterID, int chanceOfEncountering) 

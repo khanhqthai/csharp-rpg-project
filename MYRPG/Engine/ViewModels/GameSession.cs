@@ -49,7 +49,7 @@ namespace Engine.ViewModels
 
 
 
-        public World CurrentWorld { get; set; }
+        public World CurrentWorld { get;}
         public Weapon CurrentWeapon { get; set; }
 
         public Location CurrentLocation  
@@ -94,7 +94,7 @@ namespace Engine.ViewModels
                     RaiseMessage($"You have encounter a {CurrentMonster.Name}!" );
                 }
                 // Everytime player moves to a location, set the current merchant for the location
-                CurrentMerchant = CurrentLocation.merchantHere;
+                CurrentMerchant = CurrentLocation.MerchantHere;
             }
         }
         // we are using back property because, we want to use the notification on it
@@ -418,6 +418,7 @@ namespace Engine.ViewModels
 
                         // Mark the Quest completed
                         questToComplete.IsCompleted = true;
+                      
                     }
 
 

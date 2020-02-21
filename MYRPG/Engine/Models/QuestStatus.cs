@@ -11,10 +11,19 @@ namespace Engine.Models
     /// by default all quests are not completed, we set to true when a player completes it
     /// Player class will use this class to build a list of quests player has, and check on the status
     /// </summary>
-    public class QuestStatus
+    public class QuestStatus : BaseNotificationClass
     {
-        public Quest PlayerQuest { get; set; }
-        public bool IsCompleted { get; set; }
+        private bool _isCompleted;
+        public Quest PlayerQuest { get; } // remove setter, only constructor will be able to set it. more encapsulation
+        public bool IsCompleted 
+        {
+            get { return _isCompleted; }
+            set 
+            {
+                _isCompleted = value;
+                OnPropertyChanged();
+            }
+        }
         public QuestStatus(Quest quest) 
         {
             PlayerQuest = quest;

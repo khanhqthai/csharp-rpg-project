@@ -163,20 +163,20 @@
 
         </Grid>
         <!--Inventory/Quests/Map-->
-        <Grid Grid.Row="2" Grid.Column="0"  Background="LightSlateGray">
+        <Grid Grid.Row="2" Grid.Column="0"  Background="LightSlateGray" >
             <TabControl>
                 <TabItem Header="Inventory">
-                    <DataGrid ItemsSource="{Binding CurrentPlayer.GroupedInventory}" AutoGenerateColumns="False" HeadersVisibility="Column">
-                        <DataGrid.Columns>
+                    <DataGrid ItemsSource="{Binding CurrentPlayer.GroupedInventory}" AutoGenerateColumns="False" HeadersVisibility="Column" IsReadOnly="True">
+                        <DataGrid.Columns >
                             <DataGridTextColumn Header="Description" Binding="{Binding Item.Name}" Width="*"/>
-                            <DataGridTextColumn Header="Price" Binding="{Binding Item.Price}" Width="50"/>
-                            <DataGridTextColumn Header="Total" Binding="{Binding Quantity}" Width="50"/>
+                            <DataGridTextColumn Header="Price" Binding="{Binding Item.Price }" Width="50"/>
+                            <DataGridTextColumn Header="Total" Binding="{Binding Quantity }" Width="50"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Quests" >
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Quests}" AutoGenerateColumns="False"
-                              HeadersVisibility="Column">
+                              HeadersVisibility="Column" IsReadOnly="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Description" Binding="{Binding PlayerQuest.Name}" Width="*"/>
                             <DataGridTextColumn Header="Done" Binding="{Binding IsCompleted}"  Width="50"/>

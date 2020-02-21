@@ -22,6 +22,7 @@ namespace Engine.Models
         /// <param name="name">Name of merchant.</param>
         public Merchant(string name) : base(name,9999,9999,9999,9999)
         {
+     
         }
 
     }

@@ -11,8 +11,8 @@ namespace Engine.Models
     /// </summary>
     public class Weapon : Item
     {
-        public int MinDmg { get; set; }
-        public int MaxDmg { get; set; }
+        public int MinDmg { get;  }
+        public int MaxDmg { get;  }
 
         /// <summary>
         /// Class to create Weapon items

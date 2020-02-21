@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Engine.EventArgs;
-using Engine.ViewModels; // import GameSession.cs
+using Engine.ViewModels; 
 
 namespace WPFUI
 {
@@ -37,9 +37,8 @@ namespace WPFUI
         public MainWindow()
         {
             InitializeComponent();
-            Console.WriteLine(_gamesSession.GameIconImageSprite);
             // When our UI(xaml) is constructed/rendered
-            // we add the function OnGameMessagedRaised() to _gamesSession.OnMessagedRaised
+            // we subscribe the function OnGameMessagedRaised() to _gamesSession.OnMessagedRaised
             // so _gamesSession.OnMessagedRaised has a pointer/reference to OnGameMessagedRaised() function.
             // which is our function to display message to the UI(xaml)
             // inside our GamesSession we will trigger OnGameMessagedRaised() to display the message to our UI(xaml)

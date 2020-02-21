@@ -18,14 +18,23 @@ namespace Engine.Models
     /// </summary>
     public class Location
     {
-        public int XCordindate { get; set; }
-        public int YCordindate { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string ImageName { get; set; }
-        public List<Quest> QuestAvailableHere { get; set; } = new List<Quest>();
-        public List<MonsterEncounter> MonstersHere { get; set; } = new List<MonsterEncounter>();
-        public Merchant merchantHere { get; set; } 
+        public int XCordindate { get; }
+        public int YCordindate { get;  }
+        public string Name { get;  }
+        public string Description { get;  }
+        public string ImageName { get;  }
+        public List<Quest> QuestAvailableHere { get;  } = new List<Quest>();
+        public List<MonsterEncounter> MonstersHere { get;  } = new List<MonsterEncounter>();
+        public Merchant MerchantHere { get; set; }
+
+        public Location(int xCordindate, int yCordindate, string name, string description, string imageName) 
+        {
+            XCordindate = xCordindate;
+            YCordindate = yCordindate;
+            Name = name;
+            Description = description;
+            ImageName = imageName;
+        }
 
         // function to add monster encounter to MonstersAvailableHere
         public void AddMonster(int monsterID, int chanceOfEncountering) 

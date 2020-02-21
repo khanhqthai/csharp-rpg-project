@@ -22,10 +22,10 @@ namespace Engine.Models
     {
 
 
-        public int MinDamage { get; set; }
-        public int MaxDamage { get; set; }
-        public string ImageName { get; set; }
-        public int RewardExpPoints { get; private set; }
+        public int MinDamage { get; }
+        public int MaxDamage { get;  }
+        public string ImageName { get; }
+        public int RewardExpPoints { get; }
 
 
         // Monster constructor

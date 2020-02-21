@@ -13,14 +13,14 @@ namespace Engine.Models
     /// </summary>
     public class Quest
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public List<ItemQuantity> RequiredQuestItems { get; set; }
+        public int ID { get;  }
+        public string Name { get;  }
+        public string Description { get;  }
+        public List<ItemQuantity> RequiredQuestItems { get;  }
 
-        public int RewardExpPoints { get; set; }
-        public int RewardGold { get; set; }
-        public List<ItemQuantity> RewardItems { get; set; }
+        public int RewardExpPoints { get;  }
+        public int RewardGold { get;}
+        public List<ItemQuantity> RewardItems { get; }
         public Quest(int id, string name, string description, List<ItemQuantity> requiredQuestItems, 
             int rewardExpPoints, int rewardGold, List<ItemQuantity> rewardItems ) 
         {

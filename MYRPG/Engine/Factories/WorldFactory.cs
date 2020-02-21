@@ -62,12 +62,12 @@ namespace Engine.Factories
                 "One stop shop for all things",
                 "trader.png");
             // add merchant to location
-            newWorld.LocationAt(-1, 0).merchantHere = MerchantFactory.getMerchantByName("Tim 'Last King'");
+            newWorld.LocationAt(-1, 0).MerchantHere = MerchantFactory.getMerchantByName("Tim 'Last King'");
 
             newWorld.AddLocation(0, 1, "Herbal Hut",
                 "Old school smoke shop",
                 "herbalist-hut.png");
-            newWorld.LocationAt(0, 1).merchantHere = MerchantFactory.getMerchantByName("Herbalist Adria");
+            newWorld.LocationAt(0, 1).MerchantHere = MerchantFactory.getMerchantByName("Herbalist Adria");
 
             newWorld.AddLocation(0, 2, "Herb Garden",
                            "A garden full of the lastest herbs",

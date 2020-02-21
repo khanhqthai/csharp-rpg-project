@@ -81,7 +81,7 @@ namespace Engine.Models
         /// So when a player removes/add an item from his inventory the changes are reflected in the XAML
         /// A little nice feature if we are using collections
         /// </remarks>
-        public ObservableCollection<Item> Inventory { get; set; }
+        public ObservableCollection<Item> Inventory { get;  }
 
         /// <summary>
         /// List of all weapons in they player's inventory
@@ -97,7 +97,7 @@ namespace Engine.Models
         /// </remarks>
         public List<Item> Weapons => Inventory.Where(i => i is Weapon).ToList();
 
-        public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; set; }
+        public ObservableCollection<GroupedInventoryItem> GroupedInventory { get;  }
 
         public bool IsDead => CurrentHitPoints <= 0;
 
