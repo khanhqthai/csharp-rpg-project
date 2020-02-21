@@ -16,11 +16,13 @@ namespace Engine.Models
         public int ID { get;  }
         public string Name { get;  }
         public string Description { get;  }
+
         public List<ItemQuantity> RequiredQuestItems { get;  }
 
         public int RewardExpPoints { get;  }
         public int RewardGold { get;}
         public List<ItemQuantity> RewardItems { get; }
+
         public Quest(int id, string name, string description, List<ItemQuantity> requiredQuestItems, 
             int rewardExpPoints, int rewardGold, List<ItemQuantity> rewardItems ) 
         {

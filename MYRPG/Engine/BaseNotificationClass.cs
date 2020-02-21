@@ -31,7 +31,7 @@ namespace Engine
         // CallerMemberName - is a C# Attribute that  allows you to obtain the  method or property name of caller
         //                    in this case, it gets the name of who ever called OnPropertyChanged
         //                    Note: CallMemberName has to have a default value, hence empty string -- propertyName=""
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName="")
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             // if anybody is listening to PropertyChanged, notify them that the property has changed
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
