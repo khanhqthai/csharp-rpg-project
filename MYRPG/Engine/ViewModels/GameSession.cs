@@ -50,7 +50,7 @@ namespace Engine.ViewModels
 
 
         public World CurrentWorld { get;}
-        public Weapon CurrentWeapon { get; set; }
+        public Item CurrentWeapon { get; set; }
 
         public Location CurrentLocation  
         {
@@ -172,7 +172,7 @@ namespace Engine.ViewModels
             };
 
             // Add item to player's inventory(starting item)
-            CurrentPlayer.Inventory.Add(ItemFactory.CreateItem(0)); // pendant
+            CurrentPlayer.Inventory.Add(ItemFactory.CreateItem(0000)); // pendant
             CurrentPlayer.AddItemToInventory(ItemFactory.CreateItem(1001)); // wooden stick
 
             // Our game has a lot of things to instantiate. For this we introduce factory design pattern.
@@ -234,7 +234,7 @@ namespace Engine.ViewModels
             }
 
             // determine damage to monster(In most rpg board games, this would be the dice roll)
-            int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinDmg, CurrentWeapon.MaxDmg);
+            int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinDamage, CurrentWeapon.MaxDamage);
 
             if (damageToMonster == 0)
             {

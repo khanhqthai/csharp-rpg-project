@@ -28,17 +28,18 @@ namespace Engine.Factories
         // This is where we will generate our items for our game world.
         static ItemFactory() 
         {
-            _standardItems.Add(new Weapon(1000,"Wooden Stick",1,1,1));
-            _standardItems.Add(new Weapon(1001, "Fine Wooden Stick", 2, 1, 2));
-            _standardItems.Add(new Weapon(1002, "Wooden Sword", 3, 1, 3));
-            _standardItems.Add(new Weapon(1003, "Goblin Sword", 3, 1, 3));
-            _standardItems.Add(new Item(0,"Jade Pendant",5));
-            _standardItems.Add(new Item(2000, "One Eye Bat's Eyes", 1));
-            _standardItems.Add(new Item(2001, "Goblin Ear", 1));
-            _standardItems.Add(new Item(2002, "Wooden Shield", 1));
-            _standardItems.Add(new Item(2003, "Mushroom Stem", 1));
-            _standardItems.Add(new Item(2004, "Skeleton Bone", 1));
-            _standardItems.Add(new Item(2005, "Skeleton Shield", 1));
+            
+            _standardItems.Add(new Item(Item.ItemCategory.Weapon, 1000, "Wooden Stick",1,1,1));
+            _standardItems.Add(new Item(Item.ItemCategory.Weapon,1001, "Fine Wooden Stick", 2, 1, 2));
+            _standardItems.Add(new Item(Item.ItemCategory.Weapon,1002, "Wooden Sword", 3, 1, 3));
+            _standardItems.Add(new Item(Item.ItemCategory.Weapon,1003, "Goblin Sword", 3, 1, 3));
+            _standardItems.Add(new Item(Item.ItemCategory.Miscellanous,0000, "Jade Pendant",5));
+            _standardItems.Add(new Item(Item.ItemCategory.Miscellanous,2000, "One Eye Bat's Eyes", 1));
+            _standardItems.Add(new Item(Item.ItemCategory.Miscellanous,2001, "Goblin Ear", 1));
+            _standardItems.Add(new Item(Item.ItemCategory.Miscellanous,2002, "Wooden Shield", 1));
+            _standardItems.Add(new Item(Item.ItemCategory.Miscellanous,2003, "Mushroom Stem", 1));
+            _standardItems.Add(new Item(Item.ItemCategory.Miscellanous,2004, "Skeleton Bone", 1));
+            _standardItems.Add(new Item(Item.ItemCategory.Miscellanous,2005, "Skeleton Shield", 1));
 
         }
 
@@ -56,12 +57,8 @@ namespace Engine.Factories
 
                 /* normally we would return the item, but we want to be able to modify this item in the future.
                  * like add a gem to the item, or upgrade it, trade the item.  We want  Player to have it's own unique item.
-                 * We can do this by making a copy of it, or often called cloning.
+                 * We can do this by making a copy of it, or often called cloning, and give it to the player.
                  */
-                if (standardItem is Weapon) {
-                    // cast stanardItem as Weapon so we can use Weapon.Clone() function instead of Item.Clone();
-                    return (standardItem as Weapon).Clone();
-                }
                 return standardItem.Clone();
             
             }

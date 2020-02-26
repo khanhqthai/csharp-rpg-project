@@ -95,7 +95,7 @@ namespace Engine.Models
         ///     So we call ToList() to force that execution and materialize the results.
         ///     Why deferred execution? it's for speed 
         /// </remarks>
-        public List<Item> Weapons => Inventory.Where(i => i is Weapon).ToList();
+        public List<Item> Weapons => Inventory.Where(i => i.Category == Item.ItemCategory.Weapon).ToList();
 
         public ObservableCollection<GroupedInventoryItem> GroupedInventory { get;  }
 

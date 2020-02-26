@@ -8,13 +8,23 @@ namespace Engine.Models
 {
     /// <summary>
     /// Class for game item in our game world
-    /// </summary>
+    /// </summary> 
     public class Item
     {   
+        public enum ItemCategory 
+        { 
+            Miscellanous,
+            Consumeable,
+            Weapon,
+        }
+
+        public ItemCategory Category { get; }
         public int ItemTypeID { get; }
         public string Name { get;  }
         public int Price { get;  }
         public bool IsUnique { get;  }
+        public int MinDamage { get; }
+        public int MaxDamage { get; }
 
         /// <summary>
         /// The class constructor.
@@ -27,12 +37,15 @@ namespace Engine.Models
         /// We want the player to be able to modify their items.  e.i. add gems, add poison to their Weapons.
         /// Some items we will need them to be unique inorder to do this
         /// </remarks>
-        public Item(int itemTypeID, string name, int price, bool isUnique = false)
+        public Item(ItemCategory category, int itemTypeID, string name, int price, int minDamage = 0, int maxDamage = 0, bool isUnique = false)
         {
+            Category = category;
             ItemTypeID = itemTypeID;
             Name = name;
             Price = price;
             IsUnique = isUnique;
+            MinDamage = minDamage;
+            MaxDamage = maxDamage;
         }
 
         /// <summary>
@@ -43,7 +56,7 @@ namespace Engine.Models
         /// </returns>
         public Item Clone() 
         {
-            return new Item(ItemTypeID, Name, Price, IsUnique);
+            return new Item(Category, ItemTypeID, Name, Price, MinDamage, MaxDamage, IsUnique);
         }
     }
 }
